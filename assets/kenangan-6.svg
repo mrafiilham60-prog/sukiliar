@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" role="img" aria-label="Ilustrasi tenda dan api unggun di bawah langit berbintang">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#090e26"/>
+      <stop offset="0.35" stop-color="#17213f"/>
+      <stop offset="0.65" stop-color="#352c4b"/>
+      <stop offset="1" stop-color="#6f4b54"/>
+    </linearGradient>
+    <radialGradient id="milky" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#d8d3e7" stop-opacity="0.35"/>
+      <stop offset="0.45" stop-color="#a8a3c9" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#6f6f9f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="horizonGlow" cx="50%" cy="100%" r="60%">
+      <stop offset="0" stop-color="#e7a06d" stop-opacity="0.5"/>
+      <stop offset="0.5" stop-color="#b76a5c" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#3b2b46" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="fireGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffd899" stop-opacity="0.85"/>
+      <stop offset="0.35" stop-color="#f2a45e" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#d06c43" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b2d36"/>
+      <stop offset="1" stop-color="#12131b"/>
+    </linearGradient>
+    <linearGradient id="tent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a8664d"/>
+      <stop offset="0.5" stop-color="#d19468"/>
+      <stop offset="1" stop-color="#6f3f38"/>
+    </linearGradient>
+    <radialGradient id="vignette" cx="50%" cy="44%" r="72%">
+      <stop offset="0.5" stop-color="#05060d" stop-opacity="0"/>
+      <stop offset="1" stop-color="#04040a" stop-opacity="0.62"/>
+    </radialGradient>
+    <filter id="blur30"><feGaussianBlur stdDeviation="30"/></filter>
+    <filter id="blur8"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.2"/></feComponentTransfer>
+    </filter>
+  </defs>
+
+  <rect width="900" height="1125" fill="url(#sky)"/>
+
+  <!-- Bima sakti -->
+  <g transform="rotate(-31 450 560)">
+    <ellipse cx="450" cy="560" rx="118" ry="620" fill="url(#milky)" filter="url(#blur30)"/>
+    <ellipse cx="450" cy="560" rx="59" ry="600" fill="url(#milky)" opacity="0.75" filter="url(#blur30)"/>
+  </g>
+  <g fill="#dcd8ee" opacity="0.6">
+    <circle cx="286" cy="163" r="1.4"/><circle cx="344" cy="316" r="1"/><circle cx="389" cy="208" r="1.8"/>
+    <circle cx="461" cy="383" r="1.3"/><circle cx="520" cy="258" r="1"/><circle cx="560" cy="420" r="1.5"/>
+    <circle cx="623" cy="304" r="1.2"/><circle cx="681" cy="470" r="1.6"/><circle cx="739" cy="363" r="1"/>
+    <circle cx="449" cy="583" r="1.2"/><circle cx="312" cy="551" r="1.5"/><circle cx="556" cy="642" r="1"/>
+    <circle cx="671" cy="627" r="1.4"/><circle cx="390" cy="702" r="1.2"/><circle cx="786" cy="575" r="1.3"/>
+  </g>
+
+  <!-- Bintang terang -->
+  <g fill="#fff7e3">
+    <circle cx="116" cy="111" r="2.1"/><circle cx="196" cy="298" r="1.5"/><circle cx="275" cy="73" r="1.7"/>
+    <circle cx="375" cy="133" r="1.2"/><circle cx="539" cy="84" r="2"/><circle cx="645" cy="177" r="1.4"/>
+    <circle cx="802" cy="111" r="1.8"/><circle cx="845" cy="263" r="1.4"/><circle cx="74" cy="409" r="1.6"/>
+    <circle cx="722" cy="253" r="1.1"/><circle cx="473" cy="233" r="1.3"/><circle cx="224" cy="459" r="1.2"/>
+    <circle cx="822" cy="441" r="1.1"/>
+  </g>
+  <g fill="none" stroke="#dcd6e8" stroke-width="1.2" opacity="0.55">
+    <path d="M539 82v18M530 91h18"/>
+    <path d="M802 108v18M793 117h18"/>
+    <path d="M116 108v16M108 116h16"/>
+  </g>
+
+  <!-- Rasi bintang -->
+  <g fill="none" stroke="#c7c2dd" stroke-width="1.5" opacity="0.3">
+    <path d="M150 197l54-43 52 34 47-61 65 27"/>
+    <path d="M204 154l-9 61 48 39"/>
+  </g>
+
+  <!-- Bintang jatuh -->
+  <path d="M681 146L574 253" stroke="#f4e4c8" stroke-width="2" stroke-linecap="round" opacity="0.68"/>
+  <path d="M681 146L616 211" stroke="#fff6e2" stroke-width="5" stroke-linecap="round" opacity="0.3"/>
+  <circle cx="681" cy="146" r="3" fill="#fff8e8"/>
+
+  <!-- Cahaya horizon -->
+  <rect x="0" y="640" width="900" height="260" fill="url(#horizonGlow)"/>
+
+  <!-- Perbukitan -->
+  <path d="M0 785c125-68 243-87 349-58 115 31 196 18 294-30 82-41 167-36 257 3v425H0Z" fill="url(#hill)" opacity="0.9"/>
+  <path d="M0 860c115-35 221-39 321-13 105 27 199 21 289-20 101-46 199-37 290 6v292H0Z" fill="#0c0e15"/>
+
+  <!-- Pohon-pohon jauh -->
+  <g fill="#0b0c12" opacity="0.8">
+    <path d="M60 868l18-74 7 35 14-28 8 67Z"/>
+    <path d="M102 880l15-52 5 24 9-19 7 47Z"/>
+    <path d="M744 853l20-80 7 39 13-31 9 72Z"/>
+    <path d="M790 863l15-61 6 27 10-22 8 56Z"/>
+    <path d="M687 873l11-42 5 19 8-14 6 37Z"/>
+  </g>
+
+  <!-- Tenda -->
+  <g>
+    <ellipse cx="275" cy="935" rx="170" ry="28" fill="#000" opacity="0.3" filter="url(#blur8)"/>
+    <path d="M146 923L274 706l132 217Z" fill="url(#tent)"/>
+    <path d="M274 706l-44 217h88Z" fill="#e9b479"/>
+    <path d="M274 706l-15 217h30Z" fill="#6d3f38"/>
+    <path d="M188 923l86-166 84 166" fill="none" stroke="#e7b584" stroke-width="2" opacity="0.35"/>
+    <path d="M230 923c0-42 20-72 44-72s44 30 44 72Z" fill="#8b5142"/>
+    <path d="M253 923c0-31 9-54 21-54s21 23 21 54Z" fill="#f4b36f" opacity="0.75"/>
+    <path d="M274 869v54" stroke="#6a3b31" stroke-width="2" opacity="0.5"/>
+    <path d="M133 923h282" stroke="#1a1517" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+    <g stroke="#65443b" stroke-width="1.4" opacity="0.6">
+      <path d="M146 923l102-39M403 923l-104-39"/>
+      <path d="M166 923l90-24M383 923l-91-24"/>
+    </g>
+    <path d="M274 706l-3-12" stroke="#c9a781" stroke-width="2"/>
+  </g>
+
+  <!-- Api unggun -->
+  <g>
+    <circle cx="590" cy="851" r="157" fill="url(#fireGlow)"/>
+    <ellipse cx="590" cy="927" rx="105" ry="21" fill="#000" opacity="0.35" filter="url(#blur8)"/>
+    <g stroke="#4e3528" stroke-linecap="round">
+      <path d="M530 930l119-69" stroke-width="18"/>
+      <path d="M539 861l103 71" stroke-width="16"/>
+      <path d="M555 922l63-33" stroke-width="13"/>
+    </g>
+    <g fill="#5e3b2b">
+      <ellipse cx="547" cy="917" rx="17" ry="8" transform="rotate(28 547 917)"/>
+      <ellipse cx="628" cy="897" rx="17" ry="8" transform="rotate(-18 628 897)"/>
+      <ellipse cx="580" cy="930" rx="14" ry="7" transform="rotate(5 580 930)"/>
+    </g>
+    <path d="M590 912c-39-28-33-75-9-99 1 27 22 34 22 60 0 15-5 28-13 39Z" fill="#d3633f"/>
+    <path d="M590 907c-24-20-18-48-4-67 3 20 17 26 15 45-1 10-5 17-11 22Z" fill="#f0a24f"/>
+    <path d="M588 897c-11-12-5-27 2-40 2 13 9 18 6 29-1 5-4 9-8 11Z" fill="#ffe29a"/>
+    <g fill="#f4b667">
+      <circle cx="563" cy="803" r="2.4" opacity="0.8"/>
+      <circle cx="613" cy="778" r="1.7" opacity="0.7"/>
+      <circle cx="601" cy="748" r="2" opacity="0.5"/>
+      <circle cx="556" cy="758" r="1.5" opacity="0.45"/>
+      <circle cx="630" cy="824" r="1.3" opacity="0.5"/>
+    </g>
+  </g>
+
+  <!-- Dua mug -->
+  <g>
+    <path d="M440 941h49v44c0 12-10 21-24 21s-25-9-25-21Z" fill="#d6b78f"/>
+    <path d="M489 950c18-1 24 9 21 21-2 10-11 15-21 13" fill="none" stroke="#d6b78f" stroke-width="8"/>
+    <ellipse cx="464" cy="941" rx="25" ry="7" fill="#f2ddb9"/>
+    <ellipse cx="464" cy="942" rx="18" ry="4.4" fill="#5a3726"/>
+    <path d="M683 950h39v35c0 10-8 17-19 17s-20-7-20-17Z" fill="#c7a77f"/>
+    <path d="M722 958c14-1 19 7 17 17-2 8-9 12-17 10" fill="none" stroke="#c7a77f" stroke-width="7"/>
+    <ellipse cx="702" cy="950" rx="20" ry="5.5" fill="#eddcbf"/>
+    <ellipse cx="702" cy="951" rx="14" ry="3.4" fill="#5a3726"/>
+    <g fill="none" stroke="#f4d9ae" stroke-width="4" stroke-linecap="round" opacity="0.2" filter="url(#blur8)">
+      <path d="M453 931c-7-22 10-29 4-52"/>
+      <path d="M471 926c-6-18 9-26 3-45"/>
+      <path d="M692 940c-6-19 8-26 3-47"/>
+    </g>
+  </g>
+
+  <!-- Bantal / selimut -->
+  <g>
+    <path d="M741 941c55-28 101-17 136 25-31 19-75 18-136-25Z" fill="#6b4a3f"/>
+    <path d="M761 937c35-12 68-4 95 18-24 11-56 5-95-18Z" fill="#8b6150" opacity="0.7"/>
+  </g>
+
+  <!-- Rumput depan -->
+  <g fill="#080a0e">
+    <path d="M0 1125V975c45-7 84 16 111 69 14 27 19 54 17 81Z"/>
+    <path d="M900 1125V965c-53-1-97 22-125 72-16 28-22 57-21 88Z"/>
+    <path d="M285 1125c2-63 19-108 50-134 2 51 10 96 29 134Z" opacity="0.8"/>
+    <path d="M644 1125c-1-58 13-101 41-128 3 47 12 89 29 128Z" opacity="0.8"/>
+  </g>
+
+  <rect width="900" height="1125" fill="url(#vignette)"/>
+  <rect width="900" height="1125" filter="url(#grain)" opacity="0.17" style="mix-blend-mode:soft-light"/>
+</svg>

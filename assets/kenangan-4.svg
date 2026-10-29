@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" role="img" aria-label="Ilustrasi kota di malam hari dengan lampu bokeh dan bulan sabit">
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#10152c"/>
+      <stop offset="0.38" stop-color="#252842"/>
+      <stop offset="0.7" stop-color="#4b354a"/>
+      <stop offset="1" stop-color="#704750"/>
+    </linearGradient>
+    <linearGradient id="skyline" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#171a2c"/>
+      <stop offset="1" stop-color="#0d0f1b"/>
+    </linearGradient>
+    <linearGradient id="street" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#151422"/>
+      <stop offset="1" stop-color="#08080e"/>
+    </linearGradient>
+    <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f7e4c3" stop-opacity="0.7"/>
+      <stop offset="0.32" stop-color="#e6cbab" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#c9a98c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cityHaze" cx="50%" cy="68%" r="60%">
+      <stop offset="0" stop-color="#e9a064" stop-opacity="0.42"/>
+      <stop offset="0.55" stop-color="#b7664d" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#1c1b32" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="50%" cy="44%" r="70%">
+      <stop offset="0.5" stop-color="#05050b" stop-opacity="0"/>
+      <stop offset="1" stop-color="#030309" stop-opacity="0.62"/>
+    </radialGradient>
+    <filter id="blur18"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="blur8"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.2"/></feComponentTransfer>
+    </filter>
+  </defs>
+
+  <rect width="900" height="1125" fill="url(#night)"/>
+  <rect width="900" height="1125" fill="url(#cityHaze)"/>
+
+  <!-- Bintang -->
+  <g fill="#f3e8d5">
+    <circle cx="85" cy="108" r="2"/>
+    <circle cx="152" cy="221" r="1.2" opacity="0.65"/>
+    <circle cx="246" cy="83" r="1.6" opacity="0.75"/>
+    <circle cx="363" cy="163" r="1" opacity="0.6"/>
+    <circle cx="470" cy="75" r="1.8" opacity="0.8"/>
+    <circle cx="583" cy="198" r="1.1" opacity="0.55"/>
+    <circle cx="680" cy="96" r="1.7" opacity="0.75"/>
+    <circle cx="787" cy="181" r="1.3" opacity="0.6"/>
+    <circle cx="835" cy="305" r="2" opacity="0.7"/>
+    <circle cx="318" cy="293" r="1.2" opacity="0.5"/>
+    <circle cx="127" cy="351" r="1.5" opacity="0.4"/>
+    <circle cx="407" cy="236" r="1.6" opacity="0.65"/>
+    <circle cx="743" cy="274" r="1.5" opacity="0.55"/>
+    <path d="M525 286l2.5 7 7 2.5-7 2.5-2.5 7-2.5-7-7-2.5 7-2.5Z" opacity="0.6"/>
+  </g>
+
+  <!-- Bulan -->
+  <circle cx="700" cy="219" r="150" fill="url(#moonGlow)"/>
+  <path d="M724 147c-44 10-71 53-61 97 10 43 52 70 96 61 10-2 20-6 28-11-15 25-41 42-72 45-53 5-100-34-105-87-5-54 34-100 87-105 9-1 18 0 27 0Z" fill="#f2ddb9" opacity="0.93"/>
+  <path d="M724 147c-44 10-71 53-61 97 10 43 52 70 96 61" fill="none" stroke="#fff0d4" stroke-width="2" opacity="0.3"/>
+
+  <!-- Bokeh -->
+  <g filter="url(#blur18)">
+    <circle cx="175" cy="453" r="31" fill="#f2b46d" opacity="0.27"/>
+    <circle cx="284" cy="385" r="19" fill="#f5c987" opacity="0.2"/>
+    <circle cx="680" cy="431" r="41" fill="#cf8a68" opacity="0.2"/>
+    <circle cx="809" cy="521" r="24" fill="#f1ad70" opacity="0.22"/>
+    <circle cx="558" cy="342" r="15" fill="#ffd49a" opacity="0.18"/>
+    <circle cx="108" cy="566" r="18" fill="#dd9f76" opacity="0.18"/>
+    <circle cx="775" cy="639" r="31" fill="#e8a578" opacity="0.16"/>
+  </g>
+  <g fill="none" stroke="#f0c28b" opacity="0.19">
+    <circle cx="175" cy="453" r="31"/>
+    <circle cx="680" cy="431" r="41"/>
+    <circle cx="809" cy="521" r="24"/>
+  </g>
+
+  <!-- Proyeksi lampu -->
+  <g fill="#f2c186" opacity="0.09">
+    <path d="M138 585L310 990H36Z"/>
+    <path d="M704 585l95 350H642Z"/>
+  </g>
+
+  <!-- Skyline belakang -->
+  <g fill="#171b30" opacity="0.82">
+    <rect x="22" y="545" width="91" height="407"/>
+    <rect x="129" y="502" width="65" height="450"/>
+    <rect x="207" y="573" width="113" height="379"/>
+    <rect x="333" y="487" width="78" height="465"/>
+    <rect x="422" y="551" width="104" height="401"/>
+    <rect x="543" y="450" width="69" height="502"/>
+    <rect x="623" y="526" width="122" height="426"/>
+    <rect x="761" y="490" width="75" height="462"/>
+    <rect x="842" y="565" width="58" height="387"/>
+  </g>
+  <g fill="#f3c37d" opacity="0.48">
+    <rect x="38" y="575" width="7" height="11"/><rect x="58" y="575" width="7" height="11"/><rect x="79" y="613" width="7" height="11"/>
+    <rect x="146" y="536" width="6" height="10"/><rect x="169" y="567" width="6" height="10"/><rect x="146" y="603" width="6" height="10"/>
+    <rect x="228" y="600" width="8" height="12"/><rect x="259" y="640" width="8" height="12"/><rect x="290" y="600" width="8" height="12"/>
+    <rect x="351" y="520" width="7" height="11"/><rect x="375" y="561" width="7" height="11"/><rect x="351" y="603" width="7" height="11"/>
+    <rect x="443" y="585" width="8" height="12"/><rect x="475" y="624" width="8" height="12"/><rect x="499" y="585" width="8" height="12"/>
+    <rect x="560" y="485" width="6" height="10"/><rect x="585" y="524" width="6" height="10"/><rect x="560" y="565" width="6" height="10"/>
+    <rect x="644" y="558" width="7" height="11"/><rect x="676" y="598" width="7" height="11"/><rect x="709" y="558" width="7" height="11"/>
+    <rect x="781" y="526" width="6" height="10"/><rect x="805" y="565" width="6" height="10"/><rect x="781" y="605" width="6" height="10"/>
+    <rect x="859" y="598" width="5" height="9"/><rect x="879" y="636" width="5" height="9"/>
+  </g>
+
+  <!-- Skyline depan -->
+  <path d="M0 692h90V614h72v78h41V552h103v140h54V640h95v52h41V604h71v88h47V573h104v119h38V647h74v45h70v433H0Z" fill="url(#skyline)"/>
+  <g fill="#f6ca87" opacity="0.72">
+    <rect x="112" y="637" width="7" height="9"/><rect x="132" y="658" width="7" height="9"/><rect x="112" y="680" width="7" height="9"/>
+    <rect x="220" y="580" width="8" height="11"/><rect x="246" y="610" width="8" height="11"/><rect x="277" y="580" width="8" height="11"/><rect x="246" y="643" width="8" height="11"/><rect x="294" y="642" width="8" height="11"/>
+    <rect x="360" y="670" width="7" height="10"/><rect x="383" y="690" width="7" height="10"/>
+    <rect x="456" y="626" width="7" height="10"/><rect x="481" y="657" width="7" height="10"/><rect x="507" y="626" width="7" height="10"/>
+    <rect x="592" y="601" width="8" height="11"/><rect x="618" y="635" width="8" height="11"/><rect x="648" y="601" width="8" height="11"/><rect x="618" y="667" width="8" height="11"/>
+    <rect x="714" y="674" width="7" height="10"/><rect x="738" y="697" width="7" height="10"/>
+    <rect x="790" y="651" width="6" height="9"/><rect x="812" y="676" width="6" height="9"/>
+  </g>
+
+  <!-- Jalan -->
+  <path d="M0 920h900v205H0Z" fill="url(#street)"/>
+  <path d="M0 919c120-26 249-34 388-24 159 11 320 14 512-2v38c-174 19-340 16-499 5-145-10-278-2-401 22Z" fill="#2b2739" opacity="0.85"/>
+
+  <!-- Pantulan -->
+  <g opacity="0.24">
+    <path d="M118 952l-35 173h24l42-173Z" fill="#f3bf77"/>
+    <path d="M275 952l28 173h-18l-45-173Z" fill="#eaa66b"/>
+    <path d="M632 958l64 167h-22l-80-167Z" fill="#e5a66d"/>
+    <path d="M808 951l-31 174h20l45-174Z" fill="#f2c37e"/>
+   </g>
+  <g stroke="#e6b878" stroke-width="2" opacity="0.22">
+    <path d="M208 976h540"/>
+    <path d="M180 1021h544" opacity="0.6"/>
+    <path d="M151 1072h508" opacity="0.4"/>
+  </g>
+
+  <!-- Lampu jalan -->
+  <g>
+    <path d="M824 428v487" stroke="#0d0e16" stroke-width="9"/>
+    <path d="M824 428h-45" stroke="#0d0e16" stroke-width="8"/>
+    <circle cx="770" cy="428" r="48" fill="#f6c27a" opacity="0.15" filter="url(#blur8)"/>
+    <circle cx="770" cy="428" r="12" fill="#ffdd9d"/>
+    <circle cx="770" cy="428" r="7" fill="#fff5d4"/>
+  </g>
+
+  <!-- Kabel listrik tipis -->
+  <path d="M0 143c150 74 277 80 390 25 100-49 193-48 290 0 74 36 147 46 220 31" fill="none" stroke="#0e1020" stroke-width="2" opacity="0.7"/>
+
+  <!-- Asap tipis -->
+  <path d="M323 753c-20-42 29-66 10-112-12-29-5-57 19-83" fill="none" stroke="#b9a8af" stroke-width="14" stroke-linecap="round" opacity="0.05" filter="url(#blur8)"/>
+
+  <rect width="900" height="1125" fill="url(#vignette)"/>
+  <rect width="900" height="1125" filter="url(#grain)" opacity="0.17" style="mix-blend-mode:soft-light"/>
+</svg>

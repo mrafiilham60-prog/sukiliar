@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" role="img" aria-label="Ilustrasi pantai saat senja dengan ombak dan jejak kaki">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#839ca4"/>
+      <stop offset="0.28" stop-color="#c4b4ac"/>
+      <stop offset="0.55" stop-color="#f1c4a0"/>
+      <stop offset="0.78" stop-color="#e9a081"/>
+      <stop offset="1" stop-color="#d38470"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#668e8d"/>
+      <stop offset="0.28" stop-color="#3f7278"/>
+      <stop offset="0.65" stop-color="#28535e"/>
+      <stop offset="1" stop-color="#183943"/>
+    </linearGradient>
+    <linearGradient id="wetSand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c9a180"/>
+      <stop offset="0.3" stop-color="#d9b58f"/>
+      <stop offset="1" stop-color="#e8c89e"/>
+    </linearGradient>
+    <linearGradient id="drySand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ddba92"/>
+      <stop offset="1" stop-color="#b98962"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff1c9" stop-opacity="0.95"/>
+      <stop offset="0.35" stop-color="#f8d19e" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#ef9f7b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="50%" cy="44%" r="74%">
+      <stop offset="0.58" stop-color="#2d1a18" stop-opacity="0"/>
+      <stop offset="1" stop-color="#221311" stop-opacity="0.55"/>
+    </radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="soft8"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.19"/></feComponentTransfer>
+    </filter>
+  </defs>
+
+  <rect width="900" height="1125" fill="url(#sky)"/>
+
+  <!-- Awan lembut -->
+  <g fill="#f7dcc1" opacity="0.3" filter="url(#soft8)">
+    <ellipse cx="238" cy="190" rx="245" ry="23" transform="rotate(-5 238 190)"/>
+    <ellipse cx="668" cy="151" rx="270" ry="17" transform="rotate(4 668 151)"/>
+    <ellipse cx="457" cy="279" rx="330" ry="19" transform="rotate(-2 457 279)"/>
+    <ellipse cx="744" cy="367" rx="240" ry="14" transform="rotate(3 744 367)"/>
+  </g>
+
+  <!-- Matahari -->
+  <circle cx="300" cy="460" r="230" fill="url(#sunGlow)"/>
+  <circle cx="300" cy="459" r="66" fill="#ffe1ac" opacity="0.28" filter="url(#soft)"/>
+  <circle cx="300" cy="459" r="31" fill="#ffedc3"/>
+
+  <!-- Garis cakrawala -->
+  <path d="M0 525c134-21 277-25 424-14 155 11 304 12 476-8v100H0Z" fill="#a76d63" opacity="0.55"/>
+
+  <!-- Laut -->
+  <path d="M0 566h900v384H0Z" fill="url(#sea)"/>
+  <g fill="none" stroke="#f4c9a5" stroke-linecap="round">
+    <path d="M0 610c96-22 169-18 238 5 80 27 146 25 213 0 92-34 192-30 285 2 71 24 124 24 164 12" stroke-width="2" opacity="0.45"/>
+    <path d="M0 657c115-15 192-9 261 12 73 23 153 19 241-8 90-28 187-23 278 5 48 15 83 17 120 8" stroke-width="2.5" opacity="0.34"/>
+    <path d="M0 704c88-18 166-15 244 6 96 26 172 19 257-10 107-37 207-28 303 9 39 15 71 19 96 15" stroke-width="3" opacity="0.28"/>
+    <path d="M0 751c105-16 193-10 270 12 85 25 169 20 253-9 98-34 207-23 377 22" stroke-width="4" opacity="0.24"/>
+    <path d="M0 800c110-17 199-8 276 14 83 24 171 19 255-8 105-33 206-24 369 14" stroke-width="5" opacity="0.2"/>
+  </g>
+
+  <!-- Ombak -->
+  <g>
+    <path d="M0 838c92-31 182-36 268-13 68 18 132 16 206-8 93-30 210-24 426 31v57c-131-23-238-19-326 4-97 25-182 27-269 4-91-24-172-20-305 9Z" fill="#e6d3bb" opacity="0.72"/>
+    <path d="M0 862c98-29 188-31 272-8 82 23 161 19 239-6 100-32 214-18 389 27v37c-136-18-237-12-324 13-98 28-191 29-282 3C207 905 117 898 0 926Z" fill="#f5e8d7" opacity="0.8"/>
+    <path d="M0 893c101-23 190-21 268 3 84 26 164 23 244-1 103-31 214-13 388 31v27c-131-11-239-2-329 20-96 24-188 22-281-2C190 944 104 947 0 971Z" fill="#cfe0da" opacity="0.38"/>
+    <path d="M0 901c98-22 185-17 263 7 87 27 173 23 255-2 105-31 217-9 382 35" fill="none" stroke="#fff9ed" stroke-width="7" stroke-linecap="round" opacity="0.25"/>
+  </g>
+
+  <!-- Pantai basah -->
+  <path d="M0 951c114-27 216-22 302 8 77 27 157 26 239 1 110-33 223-18 359 29v136H0Z" fill="url(#wetSand)"/>
+  <path d="M0 986c108-23 200-17 286 11 85 27 171 24 257-3 106-33 217-19 357 24" fill="none" stroke="#f6dfc6" stroke-width="3" opacity="0.65"/>
+  <path d="M0 997c117-18 212-10 301 18 81 26 164 23 248-2 109-32 220-17 351 23" fill="none" stroke="#ad7e61" stroke-width="2" opacity="0.42"/>
+
+  <!-- Pantai kering -->
+  <path d="M0 1062c117-25 219-17 306 10 82 26 165 22 250-4 110-34 221-18 344 24v33H0Z" fill="url(#drySand)"/>
+  <g fill="none" stroke="#ac7c57" stroke-width="1.2" opacity="0.38">
+    <path d="M39 1098c56-10 104-7 148 8M147 1070c55-8 104-2 145 12M706 1092c53-8 101-4 146 7M761 1064c51-9 98-4 139 7"/>
+    <path d="M333 1087c43-5 88-2 130 7M472 1103c40-4 82-1 120 6"/>
+  </g>
+
+  <!-- Jejak kaki -->
+  <g fill="#a87a5b" opacity="0.5">
+    <ellipse cx="414" cy="974" rx="19" ry="10" transform="rotate(-17 414 974)"/>
+    <ellipse cx="468" cy="1012" rx="19" ry="10" transform="rotate(14 468 1012)"/>
+    <ellipse cx="393" cy="1024" rx="20" ry="11" transform="rotate(-15 393 1024)"/>
+    <ellipse cx="443" cy="1062" rx="21" ry="11" transform="rotate(12 443 1062)"/>
+    <ellipse cx="372" cy="1079" rx="21" ry="12" transform="rotate(-13 372 1079)"/>
+  </g>
+  <g fill="none" stroke="#80573f" stroke-width="1" opacity="0.28">
+    <path d="M403 970c7-2 14-2 21 0M458 1008c6-2 13-2 19 0M382 1020c7-2 14-2 21 0M432 1058c7-2 14-2 21 0M361 1075c7-2 14-2 21 0"/>
+  </g>
+
+  <!-- Burung -->
+  <g fill="none" stroke="#52404a" stroke-width="3" stroke-linecap="round" opacity="0.6">
+    <path d="M582 358c8-7 16-7 23 0 7-6 15-6 22 0"/>
+    <path d="M641 393c6-5 12-5 17 0 5-5 11-5 17 0" stroke-width="2.4"/>
+    <path d="M709 335c5-4 10-4 15 0 5-4 10-4 15 0" stroke-width="2"/>
+  </g>
+
+  <!-- Kilau air -->
+  <g fill="#ffe4b5">
+    <ellipse cx="282" cy="531" rx="28" ry="3" opacity="0.6"/>
+    <ellipse cx="352" cy="552" rx="18" ry="2" opacity="0.45"/>
+    <ellipse cx="247" cy="561" rx="12" ry="1.8" opacity="0.35"/>
+    <ellipse cx="332" cy="596" rx="34" ry="3" opacity="0.4"/>
+    <ellipse cx="322" cy="628" rx="20" ry="2" opacity="0.3"/>
+  </g>
+
+  <rect width="900" height="1125" fill="url(#vignette)"/>
+  <rect width="900" height="1125" filter="url(#grain)" opacity="0.16" style="mix-blend-mode:soft-light"/>
+</svg>

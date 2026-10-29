@@ -1,0 +1,230 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" role="img" aria-label="Ilustrasi bunga-bunga liar di padang rumput saat cahaya keemasan">
+  <defs>
+    <linearGradient id="meadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8b9467"/>
+      <stop offset="0.3" stop-color="#697852"/>
+      <stop offset="0.7" stop-color="#495a3a"/>
+      <stop offset="1" stop-color="#2b3926"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff4c9" stop-opacity="0.95"/>
+      <stop offset="0.32" stop-color="#f5d08f" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#e9bc77" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="petalCream" cx="45%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#fff8e8"/>
+      <stop offset="1" stop-color="#e8d3b1"/>
+    </radialGradient>
+    <radialGradient id="petalCoral" cx="45%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#e79b83"/>
+      <stop offset="1" stop-color="#b64e4d"/>
+    </radialGradient>
+    <radialGradient id="petalGold" cx="45%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#f4d28c"/>
+      <stop offset="1" stop-color="#c28e3f"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="50%" cy="45%" r="75%">
+      <stop offset="0.55" stop-color="#1a2414" stop-opacity="0"/>
+      <stop offset="1" stop-color="#131c10" stop-opacity="0.55"/>
+    </radialGradient>
+    <filter id="blur25"><feGaussianBlur stdDeviation="25"/></filter>
+    <filter id="blur10"><feGaussianBlur stdDeviation="10"/></filter>
+    <filter id="blur4"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="12"/></filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+    </filter>
+  </defs>
+
+  <rect width="900" height="1125" fill="url(#meadow)"/>
+
+  <!-- Bokeh latar -->
+  <g filter="url(#blur25)">
+    <circle cx="172" cy="244" r="81" fill="#d7c184" opacity="0.3"/>
+    <circle cx="419" cy="154" r="56" fill="#f3d699" opacity="0.28"/>
+    <circle cx="680" cy="307" r="105" fill="#aab578" opacity="0.22"/>
+    <circle cx="828" cy="465" r="68" fill="#e6c78b" opacity="0.2"/>
+    <circle cx="91" cy="547" r="57" fill="#d1bd87" opacity="0.2"/>
+    <circle cx="512" cy="435" r="38" fill="#e6cd99" opacity="0.18"/>
+    <circle cx="270" cy="420" r="32" fill="#f3dba5" opacity="0.2"/>
+    <circle cx="755" cy="698" r="88" fill="#9aaa6b" opacity="0.2"/>
+  </g>
+  <g fill="#5f704c" opacity="0.5" filter="url(#blur10)">
+    <ellipse cx="61" cy="819" rx="110" ry="243" transform="rotate(18 61 819)"/>
+    <ellipse cx="850" cy="767" rx="129" ry="287" transform="rotate(-22 850 767)"/>
+    <ellipse cx="380" cy="1040" rx="182" ry="126"/>
+  </g>
+
+  <!-- Cahaya dari kanan atas -->
+  <circle cx="718" cy="169" r="390" fill="url(#sun)"/>
+  <g stroke="#ffe6af" stroke-width="5" stroke-linecap="round" opacity="0.13" filter="url(#blur4)">
+    <path d="M762 179L443 491"/>
+    <path d="M790 218L529 536"/>
+    <path d="M696 142L349 446"/>
+  </g>
+
+  <!-- Rumput belakang -->
+  <g stroke="#7f8b5d" stroke-width="5" stroke-linecap="round" opacity="0.7">
+    <path d="M75 1125c-5-152 3-281 27-389"/>
+    <path d="M132 1125c4-120-3-226-20-316"/>
+    <path d="M244 1125c-7-158 1-286 25-385"/>
+    <path d="M334 1125c0-122-11-237-34-346"/>
+    <path d="M780 1125c-4-169 6-307 32-413"/>
+    <path d="M845 1125c-3-128-14-241-33-336"/>
+  </g>
+
+  <!-- Tangkai utama -->
+  <g fill="none" stroke="#50643d" stroke-linecap="round">
+    <path d="M387 1100c12-251 3-426-24-585" stroke-width="12"/>
+    <path d="M581 1125c-34-297-27-503 20-686" stroke-width="11"/>
+    <path d="M236 1125c-1-203 9-356 30-481" stroke-width="8"/>
+    <path d="M711 1125c2-221-8-379-32-506" stroke-width="8"/>
+    <path d="M478 1125c-5-161-5-295 2-409" stroke-width="6"/>
+  </g>
+
+  <!-- Daun -->
+  <g fill="#556b40">
+    <path d="M365 804c-111-36-163-97-156-182 77 22 138 82 156 182Z"/>
+    <path d="M379 701c101-56 145-123 129-203-76 32-124 99-129 203Z" opacity="0.92"/>
+    <path d="M586 734c100-19 157-66 173-139-77-2-141 47-173 139Z"/>
+    <path d="M595 842c-89-27-140-79-155-154 73 9 132 61 155 154Z" opacity="0.9"/>
+    <path d="M257 904c-77-31-115-81-114-148 58 15 99 63 114 148Z" opacity="0.82"/>
+    <path d="M700 817c81-23 126-66 136-131-62 3-112 47-136 131Z" opacity="0.78"/>
+    <path d="M479 882c-61-22-94-61-99-116 49 9 83 49 99 116Z" opacity="0.82"/>
+  </g>
+  <g fill="#73845a" opacity="0.58">
+    <path d="M478 627c58-33 89-76 86-129-46 15-77 58-86 129Z"/>
+    <path d="M695 680c-50-25-78-62-83-111 42 5 73 42 83 111Z"/>
+    <path d="M306 1004c58-19 95-52 111-99-47 0-89 34-111 99Z"/>
+  </g>
+  <g stroke="#8e9a6a" stroke-width="2" fill="none" opacity="0.45">
+    <path d="M412 750c-54-25-94-63-120-114M466 681c46-35 76-77 86-126M607 710c49-8 90-29 120-63M571 822c-41-9-78-30-107-62"/>
+  </g>
+
+  <!-- Bunga besar krem kiri -->
+  <g transform="translate(355 495)">
+    <ellipse cx="6" cy="25" rx="131" ry="56" fill="#3a482c" opacity="0.24" filter="url(#shadow)"/>
+    <g fill="url(#petalCream)">
+      <ellipse cx="0" cy="-93" rx="43" ry="111"/>
+      <ellipse cx="0" cy="-93" rx="43" ry="111" transform="rotate(45)"/>
+      <ellipse cx="0" cy="-93" rx="43" ry="111" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-93" rx="43" ry="111" transform="rotate(135)"/>
+      <ellipse cx="0" cy="-93" rx="43" ry="111" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-93" rx="43" ry="111" transform="rotate(225)"/>
+      <ellipse cx="0" cy="-93" rx="43" ry="111" transform="rotate(270)"/>
+      <ellipse cx="0" cy="-93" rx="43" ry="111" transform="rotate(315)"/>
+    </g>
+    <circle r="59" fill="#d0a54d"/>
+    <circle r="48" fill="#e0b960"/>
+    <g fill="#a97a32">
+      <circle cx="-17" cy="-13" r="5"/><circle cx="14" cy="-19" r="4"/><circle cx="22" cy="10" r="5"/>
+      <circle cx="-5" cy="19" r="4"/><circle cx="-25" cy="8" r="4"/><circle cx="4" cy="-2" r="3"/>
+    </g>
+    <g fill="#f6e0a4" opacity="0.5">
+      <circle cx="-10" cy="-8" r="2.3"/><circle cx="8" cy="11" r="2"/><circle cx="15" cy="-5" r="1.8"/>
+    </g>
+  </g>
+
+  <!-- Bunga coral kanan -->
+  <g transform="translate(625 455) rotate(12)">
+    <ellipse cx="8" cy="21" rx="124" ry="48" fill="#3a482c" opacity="0.25" filter="url(#shadow)"/>
+    <g fill="url(#petalCoral)">
+      <ellipse cx="0" cy="-87" rx="39" ry="104"/>
+      <ellipse cx="0" cy="-87" rx="39" ry="104" transform="rotate(50)"/>
+      <ellipse cx="0" cy="-87" rx="39" ry="104" transform="rotate(100)"/>
+      <ellipse cx="0" cy="-87" rx="39" ry="104" transform="rotate(150)"/>
+      <ellipse cx="0" cy="-87" rx="39" ry="104" transform="rotate(200)"/>
+      <ellipse cx="0" cy="-87" rx="39" ry="104" transform="rotate(250)"/>
+      <ellipse cx="0" cy="-87" rx="39" ry="104" transform="rotate(300)"/>
+      <ellipse cx="0" cy="-87" rx="39" ry="104" transform="rotate(350)"/>
+    </g>
+    <circle r="55" fill="#6f2630"/>
+    <circle r="45" fill="#8d353a"/>
+    <g fill="#d7aa65">
+      <circle cx="-18" cy="-9" r="4"/><circle cx="12" cy="-20" r="4"/><circle cx="23" cy="7" r="5"/>
+      <circle cx="-4" cy="22" r="3.8"/><circle cx="-24" cy="12" r="3.4"/><circle cx="3" cy="0" r="3"/>
+    </g>
+  </g>
+
+  <!-- Bunga kecil -->
+  <g transform="translate(233 659) scale(0.65)">
+    <g fill="url(#petalGold)">
+      <ellipse cx="0" cy="-67" rx="28" ry="78"/>
+      <ellipse cx="0" cy="-67" rx="28" ry="78" transform="rotate(60)"/>
+      <ellipse cx="0" cy="-67" rx="28" ry="78" transform="rotate(120)"/>
+      <ellipse cx="0" cy="-67" rx="28" ry="78" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-67" rx="28" ry="78" transform="rotate(240)"/>
+      <ellipse cx="0" cy="-67" rx="28" ry="78" transform="rotate(300)"/>
+    </g>
+    <circle r="34" fill="#7d3a2c"/>
+    <circle r="23" fill="#a6533a"/>
+  </g>
+  <g transform="translate(728 688) scale(0.55)">
+    <g fill="url(#petalCream)">
+      <ellipse cx="0" cy="-70" rx="25" ry="80"/>
+      <ellipse cx="0" cy="-70" rx="25" ry="80" transform="rotate(45)"/>
+      <ellipse cx="0" cy="-70" rx="25" ry="80" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-70" rx="25" ry="80" transform="rotate(135)"/>
+      <ellipse cx="0" cy="-70" rx="25" ry="80" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-70" rx="25" ry="80" transform="rotate(225)"/>
+      <ellipse cx="0" cy="-70" rx="25" ry="80" transform="rotate(270)"/>
+      <ellipse cx="0" cy="-70" rx="25" ry="80" transform="rotate(315)"/>
+    </g>
+    <circle r="35" fill="#b28a3e"/>
+    <circle r="24" fill="#d5ac5e"/>
+  </g>
+  <g transform="translate(486 858) scale(0.42)">
+    <g fill="url(#petalCoral)">
+      <ellipse cx="0" cy="-68" rx="26" ry="81"/>
+      <ellipse cx="0" cy="-68" rx="26" ry="81" transform="rotate(55)"/>
+      <ellipse cx="0" cy="-68" rx="26" ry="81" transform="rotate(110)"/>
+      <ellipse cx="0" cy="-68" rx="26" ry="81" transform="rotate(165)"/>
+      <ellipse cx="0" cy="-68" rx="26" ry="81" transform="rotate(220)"/>
+      <ellipse cx="0" cy="-68" rx="26" ry="81" transform="rotate(275)"/>
+      <ellipse cx="0" cy="-68" rx="26" ry="81" transform="rotate(330)"/>
+    </g>
+    <circle r="32" fill="#57242a"/>
+    <circle r="21" fill="#843836"/>
+  </g>
+
+  <!-- Tunas kecil -->
+  <g fill="#c7bc79">
+    <circle cx="304" cy="788" r="11"/>
+    <circle cx="329" cy="806" r="8"/>
+    <circle cx="688" cy="970" r="10"/>
+    <circle cx="713" cy="997" r="7"/>
+    <circle cx="549" cy="1056" r="8"/>
+  </g>
+  <g fill="#b36252">
+    <circle cx="304" cy="788" r="4"/>
+    <circle cx="329" cy="806" r="3"/>
+    <circle cx="688" cy="970" r="3.5"/>
+    <circle cx="549" cy="1056" r="3"/>
+  </g>
+
+  <!-- Butir debu cahaya -->
+  <g fill="#ffe7b8">
+    <circle cx="202" cy="329" r="3" opacity="0.7"/>
+    <circle cx="788" cy="251" r="2.5" opacity="0.8"/>
+    <circle cx="661" cy="590" r="2" opacity="0.5"/>
+    <circle cx="107" cy="663" r="2.5" opacity="0.5"/>
+    <circle cx="455" cy="332" r="2" opacity="0.55"/>
+    <circle cx="820" cy="868" r="2" opacity="0.45"/>
+    <circle cx="264" cy="177" r="2" opacity="0.5"/>
+  </g>
+
+  <!-- Rumput depan blur -->
+  <g stroke="#3a4a2c" stroke-width="10" stroke-linecap="round" opacity="0.75" filter="url(#blur4)">
+    <path d="M0 1125c40-108 83-181 129-225"/>
+    <path d="M62 1125c8-91 30-165 68-226"/>
+    <path d="M169 1125c-1-75 14-133 45-179"/>
+    <path d="M900 1125c-44-131-92-212-142-256"/>
+    <path d="M861 1125c-9-97-33-172-73-232"/>
+    <path d="M760 1125c1-81-17-145-51-191"/>
+  </g>
+
+  <rect width="900" height="1125" fill="url(#vignette)"/>
+  <rect width="900" height="1125" filter="url(#grain)" opacity="0.16" style="mix-blend-mode:soft-light"/>
+</svg>
