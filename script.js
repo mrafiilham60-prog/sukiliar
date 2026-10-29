@@ -4,15 +4,19 @@
   const rain = document.getElementById("rain");
   const audio = document.getElementById("song");
   const musicButton = document.getElementById("musicToggle");
+  const viewer = document.getElementById("photoViewer");
+  const viewerImage = document.getElementById("viewerImage");
+  const viewerClose = document.getElementById("viewerClose");
+  const viewerBackdrop = document.getElementById("viewerBackdrop");
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   const photos = [
-    { src: "assets/555450929_17924607321117528_2134975935963696357_n.webp" },
-    { src: "assets/568820905_17927290446117528_894778418645744309_n.webp" },
-    { src: "assets/602387874_17934046611117528_7843433315196551592_n.webp" },
-    { src: "assets/615432282_17937091404117528_5066806410007305780_n.webp" },
-    { src: "assets/655103942_18165781822407050_805889619026016108_n.webp" },
-    { src: "assets/776576112_17980921905117528_1166295494679011027_n.webp" }
+    { src: "assets/foto1.webp", alt: "Foto kenangan 1" },
+    { src: "assets/foto2.webp", alt: "Foto kenangan 2" },
+    { src: "assets/foto3.webp", alt: "Foto kenangan 3" },
+    { src: "assets/foto4.webp", alt: "Foto kenangan 4" },
+    { src: "assets/foto5.webp", alt: "Foto kenangan 5" },
+    { src: "assets/foto6.webp", alt: "Foto kenangan 6" }
   ];
 
   const randomBetween = (min, max) => min + Math.random() * (max - min);
@@ -39,7 +43,6 @@
 
       const card = document.createElement("div");
       card.className = "rise-photo";
-      card.setAttribute("aria-hidden", "true");
 
       const size = isStatic
         ? 0
@@ -74,6 +77,11 @@
       const sway = document.createElement("div");
       sway.className = "rise-photo__sway";
 
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "rise-photo__button";
+      button.setAttribute("aria-label", `Perbesar foto: ${photo.alt}`);
+
       const frame = document.createElement("div");
       frame.className = "rise-photo__frame";
 
@@ -87,13 +95,78 @@
       image.draggable = false;
 
       frame.append(image);
-      sway.append(frame);
+      button.append(frame);
+      sway.append(button);
       card.append(sway);
       fragment.append(card);
+
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        openViewer(photo.src, photo.alt, button);
+      });
     }
 
     rain.append(fragment);
   }
+
+  /* -------------------------------------------------------
+     Penampil foto
+     ------------------------------------------------------- */
+
+  let viewerTrigger = null;
+
+  function openViewer(src, alt, trigger) {
+    if (!viewer || !viewerImage) return;
+
+    viewerTrigger = trigger || null;
+    viewerImage.src = src;
+    viewerImage.alt = alt || "";
+
+    viewer.inert = false;
+    viewer.removeAttribute("aria-hidden");
+    viewer.classList.add("is-open");
+    document.body.classList.add("viewer-open");
+
+    window.requestAnimationFrame(() => {
+      viewerClose?.focus({ preventScroll: true });
+    });
+  }
+
+  function closeViewer() {
+    if (!viewer || !viewer.classList.contains("is-open")) return;
+
+    viewer.classList.remove("is-open");
+    viewer.setAttribute("aria-hidden", "true");
+    viewer.inert = true;
+    document.body.classList.remove("viewer-open");
+
+    // Jangan fokuskan ulang foto yang sedang bergerak; cukup lepas fokusnya
+    // supaya animasinya tidak tertahan setelah viewer ditutup.
+    if (viewerTrigger && viewerTrigger.isConnected) {
+      viewerTrigger.blur();
+    }
+    if (document.activeElement && document.activeElement !== document.body) {
+      document.activeElement.blur();
+    }
+    viewerTrigger = null;
+  }
+
+  viewerClose?.addEventListener("click", closeViewer);
+  viewerBackdrop?.addEventListener("click", closeViewer);
+
+  viewer?.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      viewerClose?.focus({ preventScroll: true });
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && viewer?.classList.contains("is-open")) {
+      event.preventDefault();
+      closeViewer();
+    }
+  });
 
   /* -------------------------------------------------------
      Lagu

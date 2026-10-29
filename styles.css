@@ -79,7 +79,7 @@ body::after {
   position: relative;
   margin: 0;
   color: var(--paper);
-  font-family: "Bodoni MT", Didot, "Times New Roman", serif;
+  font-family: "Fraunces", "Bodoni MT", Didot, "Times New Roman", serif;
   font-weight: 400;
   line-height: 0.78;
   letter-spacing: -0.055em;
@@ -97,9 +97,10 @@ body::after {
   display: block;
   margin-top: clamp(0.25rem, 1.2vh, 0.7rem);
   color: var(--gold);
+  font-family: "Caveat", cursive;
   font-size: clamp(3.2rem, 9vw, 7.8rem);
-  font-style: italic;
-  letter-spacing: -0.045em;
+  font-style: normal;
+  letter-spacing: -0.015em;
   line-height: 0.88;
 }
 
@@ -132,6 +133,51 @@ body::after {
 .rise-photo__sway {
   will-change: transform;
   animation: photo-sway var(--sway-duration) ease-in-out var(--sway-delay) infinite alternate;
+}
+
+.rise-photo__button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: zoom-in;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.rise-photo__button:focus-visible {
+  outline: none;
+}
+
+.rise-photo__button:focus-visible .rise-photo__frame {
+  outline: 2px solid var(--gold);
+  outline-offset: 5px;
+}
+
+.rise-photo:active {
+  z-index: 200 !important;
+  animation-play-state: paused;
+}
+
+.rise-photo:active .rise-photo__sway {
+  animation-play-state: paused;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rise-photo:hover {
+    z-index: 200 !important;
+    animation-play-state: paused;
+  }
+
+  .rise-photo:hover .rise-photo__sway {
+    animation-play-state: paused;
+  }
+}
+
+body.viewer-open .rise-photo,
+body.viewer-open .rise-photo__sway {
+  animation-play-state: paused;
 }
 
 .rise-photo__frame {
@@ -277,6 +323,100 @@ audio {
 
 .music:not(.is-playing) .music__icon--off {
   display: block;
+}
+
+/* ---------------------------------------------------------
+   Penampil foto
+   --------------------------------------------------------- */
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    visibility 0s linear 0.25s;
+}
+
+.viewer.is-open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transition:
+    opacity 0.25s ease,
+    visibility 0s linear 0s;
+}
+
+.viewer__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 4, 7, 0.87);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.viewer__frame {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(92vw, 64vh);
+  width: min(92vw, 64svh);
+  margin: 0;
+  padding: clamp(6px, 0.7vw, 10px);
+  place-items: center;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.99), rgba(245, 233, 215, 1)),
+    var(--paper);
+  border: 1px solid rgba(116, 79, 46, 0.2);
+  box-shadow: 0 48px 120px rgba(0, 0, 0, 0.62);
+}
+
+.viewer__frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.viewer__close {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  z-index: 2;
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  place-items: center;
+  color: rgba(247, 237, 219, 0.88);
+  background: rgba(24, 13, 18, 0.58);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.viewer__close:hover {
+  color: #fffaf0;
+  background: rgba(24, 13, 18, 0.8);
+}
+
+.viewer__close:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.viewer__close svg {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 /* ---------------------------------------------------------
