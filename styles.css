@@ -105,6 +105,79 @@ body::after {
 }
 
 /* ---------------------------------------------------------
+   Bone Hearts Background
+   --------------------------------------------------------- */
+
+.bone-hearts {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  color: #f7eddb;
+}
+
+.bone-heart {
+  position: absolute;
+  opacity: 0.07;
+  animation: bone-float 20s ease-in-out infinite alternate;
+}
+
+.bone-heart svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Positions — scattered across the entire viewport */
+.bh1  { width: 140px; top: 1%;   left: 2%;   transform: rotate(-12deg); animation-delay: 0s; }
+.bh2  { width: 80px;  top: 5%;   right: 8%;  transform: rotate(18deg);  animation-delay: -3s; }
+.bh3  { width: 55px;  top: 12%;  left: 22%;  transform: rotate(-25deg); animation-delay: -7s; }
+.bh4  { width: 110px; top: 8%;   right: 30%; transform: rotate(8deg);   animation-delay: -11s; }
+.bh5  { width: 45px;  top: 20%;  left: 5%;   transform: rotate(30deg);  animation-delay: -5s; }
+.bh6  { width: 95px;  top: 22%;  right: 3%;  transform: rotate(-15deg); animation-delay: -14s; }
+.bh7  { width: 65px;  top: 32%;  left: 15%;  transform: rotate(20deg);  animation-delay: -2s; }
+.bh8  { width: 40px;  top: 35%;  right: 18%; transform: rotate(-8deg);  animation-delay: -9s; }
+.bh9  { width: 120px; top: 42%;  left: 40%;  transform: rotate(14deg);  animation-delay: -16s; }
+.bh10 { width: 70px;  top: 48%;  right: 5%;  transform: rotate(-22deg); animation-delay: -6s; }
+.bh11 { width: 50px;  top: 50%;  left: 3%;   transform: rotate(10deg);  animation-delay: -12s; }
+.bh12 { width: 85px;  top: 58%;  right: 25%; transform: rotate(-18deg); animation-delay: -4s; }
+.bh13 { width: 35px;  top: 62%;  left: 28%;  transform: rotate(28deg);  animation-delay: -8s; }
+.bh14 { width: 100px; top: 68%;  left: 55%;  transform: rotate(-5deg);  animation-delay: -15s; }
+.bh15 { width: 60px;  top: 72%;  left: 8%;   transform: rotate(22deg);  animation-delay: -1s; }
+.bh16 { width: 48px;  top: 78%;  right: 10%; transform: rotate(-30deg); animation-delay: -10s; }
+.bh17 { width: 90px;  bottom: 8%; left: 30%;  transform: rotate(6deg);   animation-delay: -13s; }
+.bh18 { width: 75px;  bottom: 3%; right: 2%;  transform: rotate(-14deg); animation-delay: -7s; }
+
+@keyframes bone-float {
+  0%   { translate: 0 0; }
+  25%  { translate: 6px -10px; }
+  50%  { translate: -4px -6px; }
+  75%  { translate: 8px 4px; }
+  100% { translate: -3px 8px; }
+}
+
+@media (max-width: 700px) {
+  .bh1  { width: 90px; }
+  .bh2  { width: 55px; }
+  .bh3  { width: 38px; }
+  .bh4  { width: 72px; top: 10%; right: 5%; }
+  .bh5  { width: 32px; }
+  .bh6  { width: 60px; }
+  .bh7  { width: 45px; }
+  .bh8  { width: 28px; }
+  .bh9  { width: 78px; left: 10%; }
+  .bh10 { width: 48px; }
+  .bh11 { width: 35px; }
+  .bh12 { width: 55px; }
+  .bh13 { width: 25px; }
+  .bh14 { width: 65px; left: 20%; }
+  .bh15 { width: 42px; }
+  .bh16 { width: 33px; }
+  .bh17 { width: 58px; }
+  .bh18 { width: 50px; }
+}
+
+/* ---------------------------------------------------------
    Hujan foto dari bawah
    --------------------------------------------------------- */
 

@@ -16,7 +16,11 @@
     { src: "assets/foto3.webp", alt: "Foto kenangan 3" },
     { src: "assets/foto4.webp", alt: "Foto kenangan 4" },
     { src: "assets/foto5.webp", alt: "Foto kenangan 5" },
-    { src: "assets/foto6.webp", alt: "Foto kenangan 6" }
+    { src: "assets/foto6.webp", alt: "Foto kenangan 6" },
+    { src: "assets/WhatsApp Image 2026-10-11 at 19.24.35.jpeg", alt: "Foto kenangan 7" },
+    { src: "assets/kenangan-1.svg", alt: "Foto kenangan 8" },
+    { src: "assets/kenangan-2.svg", alt: "Foto kenangan 9" },
+    { src: "assets/kenangan-3.svg", alt: "Foto kenangan 10" },
   ];
 
   const randomBetween = (min, max) => min + Math.random() * (max - min);
@@ -28,8 +32,8 @@
 
     const isStatic = reducedMotionQuery.matches;
     const compact = window.matchMedia("(max-width: 700px)").matches;
-    const total = isStatic ? photos.length : (compact ? 12 : 18);
-    const lanes = compact ? 4 : 5;
+    const total = isStatic ? photos.length : (compact ? 20 : 30);
+    const lanes = compact ? 5 : 7;
     const slotsPerLane = Math.ceil(total / lanes);
     const laneSpan = compact ? 71 : 77;
     const offset = Math.floor(Math.random() * photos.length);
