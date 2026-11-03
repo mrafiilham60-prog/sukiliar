@@ -114,6 +114,169 @@
   }
 
   /* -------------------------------------------------------
+     Rose Petals Animation
+     ------------------------------------------------------- */
+  const petalsCanvas = document.getElementById("petalsCanvas");
+  if (petalsCanvas) {
+    const pCtx = petalsCanvas.getContext("2d");
+    let petals = [];
+
+    function resizePetals() {
+      petalsCanvas.width = window.innerWidth;
+      petalsCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizePetals);
+    resizePetals();
+
+    const petalCount = window.matchMedia("(max-width: 700px)").matches ? 18 : 28;
+    for (let i = 0; i < petalCount; i++) {
+      petals.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        size: randomBetween(8, 16),
+        speedY: randomBetween(0.8, 1.8),
+        speedX: randomBetween(-0.8, 0.8),
+        angle: Math.random() * 360,
+        angularSpeed: randomBetween(-1.5, 1.5),
+        opacity: randomBetween(0.35, 0.75)
+      });
+    }
+
+    function animatePetals() {
+      if (!reducedMotionQuery.matches) {
+        pCtx.clearRect(0, 0, petalsCanvas.width, petalsCanvas.height);
+        petals.forEach((p) => {
+          p.y += p.speedY;
+          p.x += Math.sin(p.y * 0.015) * p.speedX;
+          p.angle += p.angularSpeed;
+
+          if (p.y > petalsCanvas.height + 20) {
+            p.y = -20;
+            p.x = Math.random() * petalsCanvas.width;
+          }
+
+          pCtx.save();
+          pCtx.translate(p.x, p.y);
+          pCtx.rotate((p.angle * Math.PI) / 180);
+          pCtx.globalAlpha = p.opacity;
+
+          pCtx.beginPath();
+          pCtx.moveTo(0, 0);
+          pCtx.bezierCurveTo(-p.size / 2, -p.size / 2, -p.size / 2, p.size / 2, 0, p.size);
+          pCtx.bezierCurveTo(p.size / 2, p.size / 2, p.size / 2, -p.size / 2, 0, 0);
+          pCtx.fillStyle = "#8a2434";
+          pCtx.fill();
+
+          pCtx.restore();
+        });
+      }
+      requestAnimationFrame(animatePetals);
+    }
+    animatePetals();
+  }
+
+  /* -------------------------------------------------------
+     Photo Open Burst Animation
+     ------------------------------------------------------- */
+  const burstCanvas = document.getElementById("burstCanvas");
+  let fireBurst = () => {};
+
+  if (burstCanvas) {
+    const bCtx = burstCanvas.getContext("2d");
+    let burstParticles = [];
+
+    function resizeBurst() {
+      burstCanvas.width = window.innerWidth;
+      burstCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeBurst);
+    resizeBurst();
+
+    fireBurst = (originX, originY) => {
+      if (reducedMotionQuery.matches) return;
+      const x = originX || window.innerWidth / 2;
+      const y = originY || window.innerHeight / 2;
+      const colors = ["#d7b27b", "#f7eddb", "#e04b63", "#ffffff", "#b88a50", "#9b2c3d"];
+      const count = window.matchMedia("(max-width: 700px)").matches ? 70 : 105;
+
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = randomBetween(4, 16);
+        const type = Math.random();
+        burstParticles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 2.5,
+          gravity: 0.28,
+          friction: 0.96,
+          size: randomBetween(6, 12),
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          rotationSpeed: randomBetween(-9, 9),
+          opacity: 1,
+          shape: type < 0.5 ? "rect" : type < 0.8 ? "star" : "heart"
+        });
+      }
+    };
+
+    function drawStar(ctx, size) {
+      ctx.beginPath();
+      for (let i = 0; i < 4; i++) {
+        ctx.lineTo(Math.cos(((18 + i * 90) * Math.PI) / 180) * size, -Math.sin(((18 + i * 90) * Math.PI) / 180) * size);
+        ctx.lineTo(Math.cos(((63 + i * 90) * Math.PI) / 180) * (size * 0.35), -Math.sin(((63 + i * 90) * Math.PI) / 180) * (size * 0.35));
+      }
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function drawHeart(ctx, size) {
+      ctx.beginPath();
+      const topCurveHeight = size * 0.3;
+      ctx.moveTo(0, topCurveHeight);
+      ctx.bezierCurveTo(0, 0, -size / 2, 0, -size / 2, topCurveHeight);
+      ctx.bezierCurveTo(-size / 2, (size + topCurveHeight) / 2, 0, size, 0, size * 1.15);
+      ctx.bezierCurveTo(0, size, size / 2, (size + topCurveHeight) / 2, size / 2, topCurveHeight);
+      ctx.bezierCurveTo(size / 2, 0, 0, 0, 0, topCurveHeight);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function animateBurst() {
+      bCtx.clearRect(0, 0, burstCanvas.width, burstCanvas.height);
+      burstParticles = burstParticles.filter((p) => p.opacity > 0.02);
+
+      burstParticles.forEach((p) => {
+        p.vx *= p.friction;
+        p.vy = (p.vy + p.gravity) * p.friction;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rotation += p.rotationSpeed;
+        p.opacity -= 0.013;
+
+        bCtx.save();
+        bCtx.translate(p.x, p.y);
+        bCtx.rotate((p.rotation * Math.PI) / 180);
+        bCtx.globalAlpha = Math.max(0, p.opacity);
+        bCtx.fillStyle = p.color;
+
+        if (p.shape === "rect") {
+          bCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+        } else if (p.shape === "star") {
+          drawStar(bCtx, p.size);
+        } else {
+          drawHeart(bCtx, p.size);
+        }
+
+        bCtx.restore();
+      });
+
+      requestAnimationFrame(animateBurst);
+    }
+    animateBurst();
+  }
+
+  /* -------------------------------------------------------
      Penampil foto
      ------------------------------------------------------- */
 
@@ -125,6 +288,11 @@
     viewerTrigger = trigger || null;
     viewerImage.src = src;
     viewerImage.alt = alt || "";
+
+    const rect = trigger ? trigger.getBoundingClientRect() : null;
+    const originX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const originY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+    fireBurst(originX, originY);
 
     viewer.inert = false;
     viewer.removeAttribute("aria-hidden");
@@ -157,6 +325,11 @@
 
   viewerClose?.addEventListener("click", closeViewer);
   viewerBackdrop?.addEventListener("click", closeViewer);
+
+  const greetingTitle = document.querySelector(".greeting__title");
+  greetingTitle?.addEventListener("click", (e) => {
+    fireBurst(e.clientX, e.clientY);
+  });
 
   viewer?.addEventListener("keydown", (event) => {
     if (event.key === "Tab") {

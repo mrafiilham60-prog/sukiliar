@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1a0f15">
+  <title>Preview 3 Opsi Desain — Panjang Umur, kawann!</title>
+
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Caveat:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+
+  <style>
+    /* =========================================================
+       CUSTOM PREVIEW UI & CONTROLLER STYLES
+       ========================================================= */
+
+    /* Controller Dock */
+    .preview-dock {
+      position: fixed;
+      bottom: max(1.2rem, env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      width: min(94vw, 760px);
+      pointer-events: auto;
+    }
+
+    .preview-dock__bar {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.5rem;
+      background: rgba(26, 15, 21, 0.88);
+      border: 1px solid rgba(215, 178, 123, 0.35);
+      border-radius: 999px;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.65), 0 0 20px rgba(215, 178, 123, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+
+    .preview-dock__tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 1rem;
+      color: rgba(247, 237, 219, 0.75);
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .preview-dock__tab:hover {
+      color: #fffaf0;
+      background: rgba(247, 237, 219, 0.08);
+    }
+
+    .preview-dock__tab.is-active {
+      color: #1a0f15;
+      background: linear-gradient(135deg, #f7eddb, #d7b27b);
+      border-color: #d7b27b;
+      box-shadow: 0 4px 16px rgba(215, 178, 123, 0.4);
+    }
+
+    .preview-dock__tab svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .preview-info-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      padding: 0.5rem 1.1rem;
+      background: rgba(24, 12, 18, 0.78);
+      border: 1px solid rgba(247, 237, 219, 0.15);
+      border-radius: 12px;
+      color: rgba(247, 237, 219, 0.9);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 0.78rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .preview-info-pill b {
+      color: var(--gold);
+    }
+
+    .preview-btn-action {
+      background: rgba(215, 178, 123, 0.2);
+      border: 1px solid var(--gold);
+      color: #fffaf0;
+      border-radius: 6px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preview-btn-action:hover {
+      background: var(--gold);
+      color: #1a0f15;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =========================================================
+       OPSI 1: WARM VINTAGE SCRAPBOOK STYLES
+       ========================================================= */
+
+    /* Fairy Lights string at top */
+    .fairy-lights {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      z-index: 33;
+      pointer-events: none;
+      display: none;
+    }
+
+    .theme-vintage .fairy-lights {
+      display: block;
+    }
+
+    .fairy-lights svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .fairy-bulb {
+      animation: bulb-glow 2.5s ease-in-out infinite alternate;
+    }
+    .fairy-bulb:nth-child(2n) { animation-delay: -0.8s; }
+    .fairy-bulb:nth-child(3n) { animation-delay: -1.6s; }
+
+    @keyframes bulb-glow {
+      0% { opacity: 0.45; filter: drop-shadow(0 0 2px #d7b27b); }
+      100% { opacity: 1; filter: drop-shadow(0 0 10px #ffe29a) drop-shadow(0 0 20px #e8a84c); }
+    }
+
+    /* Washi tape on polaroids */
+    .theme-vintage .rise-photo__frame::before {
+      content: "";
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 48%;
+      height: 16px;
+      background: rgba(235, 215, 185, 0.72);
+      border-left: 2px dashed rgba(180, 140, 100, 0.45);
+      border-right: 2px dashed rgba(180, 140, 100, 0.45);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(2px);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .theme-vintage .rise-photo:nth-child(even) .rise-photo__frame::before {
+      transform: translateX(-50%) rotate(3deg);
+      background: rgba(220, 195, 170, 0.68);
+    }
+
+    /* Handwritten caption on polaroids */
+    .polaroid-caption {
+      display: none;
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: "Caveat", cursive;
+      font-size: clamp(0.7rem, 2.2vw, 0.95rem);
+      color: #644a33;
+      pointer-events: none;
+      line-height: 1;
+      opacity: 0.9;
+    }
+
+    .theme-vintage .polaroid-caption {
+      display: block;
+    }
+
+    /* Golden Fireflies Canvas */
+    #firefliesCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      display: none;
+    }
+    .theme-vintage #firefliesCanvas {
+      display: block;
+    }
+
+    /* =========================================================
+       OPSI 2: GOTHIC ROMANCE & AMBIENT GLOW STYLES
+       ========================================================= */
+
+    /* Pulsing Bone Hearts */
+    .theme-gothic .bone-heart {
+      opacity: 0.14 !important;
+      filter: drop-shadow(0 0 12px rgba(215, 178, 123, 0.45)) drop-shadow(0 0 24px rgba(180, 60, 80, 0.3));
+      animation: bone-float 18s ease-in-out infinite alternate, bone-heartbeat 4s ease-in-out infinite !important;
+    }
+
+    @keyframes bone-heartbeat {
+      0%, 100% { transform: scale(1) rotate(var(--rot, 0deg)); }
+      14% { transform: scale(1.08) rotate(var(--rot, 0deg)); filter: drop-shadow(0 0 18px rgba(230, 190, 130, 0.7)); }
+      28% { transform: scale(1.02) rotate(var(--rot, 0deg)); }
+      42% { transform: scale(1.12) rotate(var(--rot, 0deg)); filter: drop-shadow(0 0 22px rgba(220, 80, 95, 0.6)); }
+      56% { transform: scale(1) rotate(var(--rot, 0deg)); }
+    }
+
+    /* Gold Shimmer Sweep across Title */
+    .theme-gothic .greeting__hbd {
+      background: linear-gradient(110deg, #f7eddb 20%, #ffffff 40%, #d7b27b 50%, #f7eddb 70%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gold-sweep 4s linear infinite;
+      text-shadow: none !important;
+      filter: drop-shadow(0 4px 18px rgba(215, 178, 123, 0.35));
+    }
+
+    .theme-gothic .greeting__name {
+      text-shadow: 0 0 16px rgba(215, 178, 123, 0.65), 0 0 32px rgba(144, 69, 58, 0.5) !important;
+      animation: name-pulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes gold-sweep {
+      to { background-position: 200% center; }
+    }
+
+    @keyframes name-pulse {
+      0% { filter: brightness(1); }
+      100% { filter: brightness(1.25) drop-shadow(0 0 10px rgba(215, 178, 123, 0.6)); }
+    }
+
+    /* Deep Shadow & Gold Border on Polaroids */
+    .theme-gothic .rise-photo__frame {
+      border: 1px solid rgba(215, 178, 123, 0.5) !important;
+      box-shadow: 
+        0 24px 50px rgba(0, 0, 0, 0.75), 
+        0 8px 18px rgba(0, 0, 0, 0.5), 
+        0 0 25px rgba(144, 69, 58, 0.32) !important;
+    }
+
+    /* Falling Rose Petals Canvas */
+    #petalsCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 32;
+      pointer-events: none;
+      display: none;
+    }
+    .theme-gothic #petalsCanvas {
+      display: block;
+    }
+
+    /* =========================================================
+       OPSI 3: INTERACTIVE CELEBRATION & CINEMATIC STYLES
+       ========================================================= */
+
+    /* Equalizer Visualizer on Music Button */
+    .eq-bars {
+      display: none;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 18px;
+    }
+
+    .theme-celebration .music .music__icon {
+      display: none !important;
+    }
+
+    .theme-celebration .eq-bars {
+      display: flex;
+    }
+
+    .eq-bar {
+      width: 3px;
+      background: var(--gold);
+      border-radius: 2px;
+      animation: eq-bounce 1s ease-in-out infinite alternate;
+    }
+    .eq-bar:nth-child(1) { height: 35%; animation-delay: -0.2s; }
+    .eq-bar:nth-child(2) { height: 85%; animation-delay: -0.6s; }
+    .eq-bar:nth-child(3) { height: 50%; animation-delay: -0.4s; }
+    .eq-bar:nth-child(4) { height: 95%; animation-delay: -0.8s; }
+
+    @keyframes eq-bounce {
+      0% { height: 20%; opacity: 0.6; }
+      100% { height: 100%; opacity: 1; filter: drop-shadow(0 0 6px var(--gold)); }
+    }
+
+    /* Sparkle Particle (Trail) */
+    .sparkle-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 99;
+      transform: translate(-50%, -50%);
+      animation: sparkle-fade 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    @keyframes sparkle-fade {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.2) rotate(180deg);
+      }
+    }
+
+    /* Confetti Canvas */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 98;
+      pointer-events: none;
+    }
+
+    /* 3D Interactive Hover on Rise Photo */
+    .theme-celebration .rise-photo__button {
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .theme-celebration .rise-photo__button:hover {
+      transform: scale(1.12) rotate(calc(var(--rotation) * 0.4));
+      filter: drop-shadow(0 15px 30px rgba(215, 178, 123, 0.45));
+    }
+  </style>
+</head>
+<body class="theme-vintage">
+
+  <!-- =========================================================
+       FAIRY LIGHTS (OPSI 1)
+       ========================================================= -->
+  <div class="fairy-lights" aria-hidden="true">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none">
+      <path d="M0,5 Q150,35 300,8 Q450,38 600,10 Q750,40 900,8 Q1050,35 1200,6" fill="none" stroke="rgba(215,178,123,0.3)" stroke-width="1.2"/>
+      <!-- Bulbs -->
+      <g class="fairy-bulb"><circle cx="75" cy="23" r="4.5" fill="#ffe29a"/><circle cx="75" cy="23" r="8" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="150" cy="35" r="5" fill="#fff0b8"/><circle cx="150" cy="35" r="9" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="225" cy="23" r="4.5" fill="#ffe29a"/><circle cx="225" cy="23" r="8" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="375" cy="26" r="5" fill="#fff0b8"/><circle cx="375" cy="26" r="9" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="450" cy="38" r="5.5" fill="#ffe29a"/><circle cx="450" cy="38" r="10" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="525" cy="26" r="4.5" fill="#fff0b8"/><circle cx="525" cy="26" r="8" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="675" cy="27" r="5" fill="#ffe29a"/><circle cx="675" cy="27" r="9" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="750" cy="40" r="5.5" fill="#fff0b8"/><circle cx="750" cy="40" r="10" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="825" cy="26" r="4.5" fill="#ffe29a"/><circle cx="825" cy="26" r="8" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="975" cy="24" r="5" fill="#fff0b8"/><circle cx="975" cy="24" r="9" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="1050" cy="35" r="5.5" fill="#ffe29a"/><circle cx="1050" cy="35" r="10" fill="#d7b27b" opacity="0.3"/></g>
+      <g class="fairy-bulb"><circle cx="1125" cy="22" r="4.5" fill="#fff0b8"/><circle cx="1125" cy="22" r="8" fill="#d7b27b" opacity="0.3"/></g>
+    </svg>
+  </div>
+
+  <!-- FIREFLIES CANVAS (OPSI 1) -->
+  <canvas id="firefliesCanvas"></canvas>
+
+  <!-- PETALS CANVAS (OPSI 2) -->
+  <canvas id="petalsCanvas"></canvas>
+
+  <!-- CONFETTI CANVAS (OPSI 3) -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- =========================================================
+       GREETING TITLE
+       ========================================================= -->
+  <header class="greeting" aria-label="Panjang Umur, kawann!">
+    <h1 class="greeting__title" id="greetingTitle" title="Klik untuk letupan konfeti!">
+      <span class="greeting__hbd">Panjang Umur,</span>
+      <span class="greeting__name">kawann!</span>
+    </h1>
+  </header>
+
+  <!-- =========================================================
+       BONE HEARTS BACKGROUND
+       ========================================================= -->
+  <div class="bone-hearts" aria-hidden="true">
+    <div class="bone-heart bh1"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="37" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="46" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><rect x="48" y="55" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 31 C38 33,22 38,15 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M52 31 C62 33,78 38,85 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 40 C38 42,20 48,13 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 40 C62 42,80 48,87 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
+    <div class="bone-heart bh2"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><rect x="48" y="30" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="38" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/></svg></div>
+    <div class="bone-heart bh3"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><rect x="48" y="35" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><path d="M48 38 C40 40,28 43,22 41" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 38 C60 40,72 43,78 41" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
+    <div class="bone-heart bh4"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="37" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><path d="M48 31 C38 33,22 38,15 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M52 31 C62 33,78 38,85 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/></svg></div>
+    <div class="bone-heart bh6"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="37" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/></svg></div>
+    <div class="bone-heart bh7"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M48 33 C40 35,25 38,18 36" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 33 C60 35,75 38,82 36" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
+    <div class="bone-heart bh9"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><path d="M48 40 C38 42,20 48,13 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 40 C62 42,80 48,87 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
+  </div>
+
+  <!-- =========================================================
+       PHOTO RAIN CONTAINER
+       ========================================================= -->
+  <main class="rain" id="rain" aria-label="Hujan foto kenangan"></main>
+
+  <!-- =========================================================
+       MUSIC BUTTON
+       ========================================================= -->
+  <button class="music is-playing" id="musicToggle" type="button" aria-label="Putar musik">
+    <svg class="music__icon music__icon--on" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:block;">
+      <path d="M9 17.5V6.2l9-1.8v10.7" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <ellipse cx="6.6" cy="17.6" rx="2.7" ry="2.25" fill="currentColor"/>
+      <ellipse cx="15.6" cy="15.8" rx="2.7" ry="2.25" fill="currentColor"/>
+    </svg>
+    <!-- Equalizer bars for Opsi 3 -->
+    <div class="eq-bars">
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+    </div>
+  </button>
+
+  <!-- =========================================================
+       PHOTO VIEWER MODAL
+       ========================================================= -->
+  <div class="viewer" id="photoViewer" role="dialog" aria-modal="true" aria-label="Foto kenangan" aria-hidden="true" inert>
+    <div class="viewer__backdrop" id="viewerBackdrop"></div>
+    <figure class="viewer__frame">
+      <img id="viewerImage" src="" alt="">
+    </figure>
+    <button class="viewer__close" id="viewerClose" type="button" aria-label="Tutup foto">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- =========================================================
+       FLOATING PREVIEW CONTROLLER DOCK
+       ========================================================= -->
+  <aside class="preview-dock">
+    <div class="preview-info-pill" id="previewInfo">
+      <span id="previewDesc"><b>Opsi 1: Warm Vintage</b> — Washi tape, tulisan tangan di polaroid, kunang-kunang emas, & lampu hias.</span>
+      <button class="preview-btn-action" id="triggerEffectBtn">🎉 Letupkan Konfeti</button>
+    </div>
+
+    <nav class="preview-dock__bar" aria-label="Pilih Opsi Tampilan">
+      <button class="preview-dock__tab" data-theme="base" type="button">
+        <span>Original (Polos)</span>
+      </button>
+      <button class="preview-dock__tab is-active" data-theme="vintage" type="button">
+        <span>✨ 1. Warm Vintage</span>
+      </button>
+      <button class="preview-dock__tab" data-theme="gothic" type="button">
+        <span>🌹 2. Gothic Romance</span>
+      </button>
+      <button class="preview-dock__tab" data-theme="celebration" type="button">
+        <span>🎉 3. Celebration</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- =========================================================
+       SCRIPTS
+       ========================================================= -->
+  <script>
+  (() => {
+    "use strict";
+
+    const photos = [
+      { src: "../assets/foto1.webp", alt: "Foto kenangan 1", note: "hari baik ☕" },
+      { src: "../assets/foto2.webp", alt: "Foto kenangan 2", note: "tawa bersama ✨" },
+      { src: "../assets/foto3.webp", alt: "Foto kenangan 3", note: "selamanya 🤍" },
+      { src: "../assets/foto4.webp", alt: "Foto kenangan 4", note: "best memory 📸" },
+      { src: "../assets/foto5.webp", alt: "Foto kenangan 5", note: "panjang umur! 🎂" },
+      { src: "../assets/foto6.webp", alt: "Foto kenangan 6", note: "cerita kita 🌻" },
+      { src: "../assets/WhatsApp Image 2026-10-11 at 19.24.35.jpeg", alt: "Foto kenangan 7", note: "special day 🎈" },
+      { src: "../assets/kenangan-1.svg", alt: "Foto kenangan 8", note: "hangat selalu 🌿" },
+      { src: "../assets/kenangan-2.svg", alt: "Foto kenangan 9", note: "terima kasih 🤝" },
+      { src: "../assets/kenangan-3.svg", alt: "Foto kenangan 10", note: "langkah baru 🚀" },
+    ];
+
+    const rain = document.getElementById("rain");
+    const viewer = document.getElementById("photoViewer");
+    const viewerImage = document.getElementById("viewerImage");
+    const viewerClose = document.getElementById("viewerClose");
+    const viewerBackdrop = document.getElementById("viewerBackdrop");
+
+    const randomBetween = (min, max) => min + Math.random() * (max - min);
+
+    /* Render Photos */
+    function buildPhotoRain() {
+      if (!rain) return;
+      rain.replaceChildren();
+
+      const compact = window.matchMedia("(max-width: 700px)").matches;
+      const total = compact ? 18 : 26;
+      const lanes = compact ? 5 : 7;
+      const slotsPerLane = Math.ceil(total / lanes);
+      const laneSpan = compact ? 71 : 77;
+      const offset = Math.floor(Math.random() * photos.length);
+      const fragment = document.createDocumentFragment();
+
+      for (let index = 0; index < total; index += 1) {
+        const photoIndex = (index + offset) % photos.length;
+        const photo = photos[photoIndex];
+
+        const card = document.createElement("div");
+        card.className = "rise-photo";
+
+        const size = compact ? randomBetween(65, 95) : randomBetween(90, 140);
+        const lane = index % lanes;
+        const slot = Math.floor(index / lanes);
+        const duration = randomBetween(15, 23);
+        const phase = (slot + randomBetween(0.05, 0.45)) / slotsPerLane;
+        const delay = -phase * duration;
+        const swayDuration = randomBetween(5, 8);
+        const swayDelay = -randomBetween(0, swayDuration);
+        const laneStart = lanes === 1 ? 0 : (lane / (lanes - 1)) * laneSpan;
+        const x = Math.min(82, Math.max(0, 1 + laneStart + randomBetween(-1, 2.5)));
+
+        card.style.setProperty("--x", `${x}%`);
+        card.style.setProperty("--size", `${size}px`);
+        card.style.setProperty("--duration", `${duration}s`);
+        card.style.setProperty("--delay", `${delay}s`);
+        card.style.setProperty("--sway-duration", `${swayDuration}s`);
+        card.style.setProperty("--sway-delay", `${swayDelay}s`);
+        card.style.setProperty("--rotation", `${randomBetween(-12, 12)}deg`);
+        card.style.setProperty("--sway-a", `${randomBetween(-20, -5)}px`);
+        card.style.setProperty("--sway-b", `${randomBetween(5, 20)}px`);
+        card.style.setProperty("--photo-opacity", randomBetween(0.8, 1).toFixed(2));
+        card.style.zIndex = String(Math.round(size) || 1);
+
+        const sway = document.createElement("div");
+        sway.className = "rise-photo__sway";
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "rise-photo__button";
+        button.setAttribute("aria-label", `Perbesar foto: ${photo.alt}`);
+
+        const frame = document.createElement("div");
+        frame.className = "rise-photo__frame";
+
+        const image = document.createElement("img");
+        image.src = photo.src;
+        image.alt = "";
+        image.width = 900;
+        image.height = 1125;
+        image.draggable = false;
+
+        const caption = document.createElement("div");
+        caption.className = "polaroid-caption";
+        caption.textContent = photo.note;
+
+        frame.appendChild(image);
+        frame.appendChild(caption);
+        button.appendChild(frame);
+        sway.appendChild(button);
+        card.appendChild(sway);
+        fragment.appendChild(card);
+
+        button.addEventListener("click", () => {
+          viewerImage.src = photo.src;
+          viewer.hidden = false;
+          viewer.removeAttribute("inert");
+          viewer.setAttribute("aria-hidden", "false");
+          requestAnimationFrame(() => viewer.classList.add("is-open"));
+        });
+      }
+
+      rain.appendChild(fragment);
+    }
+
+    buildPhotoRain();
+
+    /* Viewer close */
+    function closeViewer() {
+      viewer.classList.remove("is-open");
+      viewer.setAttribute("aria-hidden", "true");
+      viewer.setAttribute("inert", "");
+    }
+    viewerClose.addEventListener("click", closeViewer);
+    viewerBackdrop.addEventListener("click", closeViewer);
+
+    /* =========================================================
+       THEME SWITCHER CONTROLLER
+       ========================================================= */
+    const tabs = document.querySelectorAll(".preview-dock__tab");
+    const previewDesc = document.getElementById("previewDesc");
+
+    const descriptions = {
+      base: "<b>Tampilan Asli (Sebelumnya):</b> Tampilan dasar tanpa efek tambahan, polos dan minimalis.",
+      vintage: "<b>Opsi 1: Warm Vintage Scrapbook:</b> Washi tape di polaroid, tulisan tangan manis, kunang-kunang emas, & lampu hias gantung.",
+      gothic: "<b>Opsi 2: Gothic Romance:</b> Bone hearts berdenyut dengan glow X-ray, kilau emas pada judul, guguran mawar, & frame berdimensi.",
+      celebration: "<b>Opsi 3: Interactive Celebration:</b> Jejak bintang/love saat kursor bergerak, audio visualizer, 3D tilt card, & letupan konfeti!"
+    };
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("is-active"));
+        tab.classList.add("is-active");
+
+        const theme = tab.dataset.theme;
+        document.body.className = "";
+        if (theme !== "base") {
+          document.body.classList.add(`theme-${theme}`);
+        }
+
+        previewDesc.innerHTML = descriptions[theme];
+      });
+    });
+
+    /* =========================================================
+       CANVAS 1: FIREFLIES (OPSI 1)
+       ========================================================= */
+    const fCanvas = document.getElementById("firefliesCanvas");
+    const fCtx = fCanvas.getContext("2d");
+    let fireflies = [];
+
+    function resizeFireflies() {
+      fCanvas.width = window.innerWidth;
+      fCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeFireflies);
+    resizeFireflies();
+
+    for (let i = 0; i < 35; i++) {
+      fireflies.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        radius: randomBetween(1.2, 3),
+        alpha: Math.random(),
+        speedX: randomBetween(-0.35, 0.35),
+        speedY: randomBetween(-0.6, -0.15),
+        pulseSpeed: randomBetween(0.015, 0.04)
+      });
+    }
+
+    function animateFireflies() {
+      if (document.body.classList.contains("theme-vintage")) {
+        fCtx.clearRect(0, 0, fCanvas.width, fCanvas.height);
+        fireflies.forEach(p => {
+          p.x += p.speedX;
+          p.y += p.speedY;
+          p.alpha += p.pulseSpeed;
+
+          if (p.y < -10) p.y = fCanvas.height + 10;
+          if (p.x < -10) p.x = fCanvas.width + 10;
+          if (p.x > fCanvas.width + 10) p.x = -10;
+
+          const currentAlpha = (Math.sin(p.alpha) + 1) / 2 * 0.75 + 0.15;
+          fCtx.beginPath();
+          fCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          fCtx.fillStyle = `rgba(225, 185, 120, ${currentAlpha})`;
+          fCtx.shadowBlur = 10;
+          fCtx.shadowColor = "#d7b27b";
+          fCtx.fill();
+        });
+      }
+      requestAnimationFrame(animateFireflies);
+    }
+    animateFireflies();
+
+    /* =========================================================
+       CANVAS 2: FALLING PETALS (OPSI 2)
+       ========================================================= */
+    const pCanvas = document.getElementById("petalsCanvas");
+    const pCtx = pCanvas.getContext("2d");
+    let petals = [];
+
+    function resizePetals() {
+      pCanvas.width = window.innerWidth;
+      pCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizePetals);
+    resizePetals();
+
+    for (let i = 0; i < 28; i++) {
+      petals.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        size: randomBetween(8, 16),
+        speedY: randomBetween(0.8, 1.8),
+        speedX: randomBetween(-0.8, 0.8),
+        angle: Math.random() * 360,
+        angularSpeed: randomBetween(-1.5, 1.5),
+        opacity: randomBetween(0.4, 0.75)
+      });
+    }
+
+    function animatePetals() {
+      if (document.body.classList.contains("theme-gothic")) {
+        pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+        petals.forEach(p => {
+          p.y += p.speedY;
+          p.x += Math.sin(p.y * 0.015) * p.speedX;
+          p.angle += p.angularSpeed;
+
+          if (p.y > pCanvas.height + 20) {
+            p.y = -20;
+            p.x = Math.random() * pCanvas.width;
+          }
+
+          pCtx.save();
+          pCtx.translate(p.x, p.y);
+          pCtx.rotate((p.angle * Math.PI) / 180);
+          pCtx.globalAlpha = p.opacity;
+
+          // Petal shape
+          pCtx.beginPath();
+          pCtx.moveTo(0, 0);
+          pCtx.bezierCurveTo(-p.size / 2, -p.size / 2, -p.size / 2, p.size / 2, 0, p.size);
+          pCtx.bezierCurveTo(p.size / 2, p.size / 2, p.size / 2, -p.size / 2, 0, 0);
+          pCtx.fillStyle = "#8a2434"; // Deep crimson rose
+          pCtx.fill();
+
+          pCtx.restore();
+        });
+      }
+      requestAnimationFrame(animatePetals);
+    }
+    animatePetals();
+
+    /* =========================================================
+       CANVAS 3: CONFETTI EXPLOSION (OPSI 3)
+       ========================================================= */
+    const cCanvas = document.getElementById("confettiCanvas");
+    const cCtx = cCanvas.getContext("2d");
+    let confettiList = [];
+
+    function resizeConfetti() {
+      cCanvas.width = window.innerWidth;
+      cCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeConfetti);
+    resizeConfetti();
+
+    function fireConfetti(startX, startY) {
+      const colors = ["#d7b27b", "#f7eddb", "#e0586f", "#ffffff", "#b88a50"];
+      for (let i = 0; i < 90; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = randomBetween(4, 15);
+        confettiList.push({
+          x: startX || window.innerWidth / 2,
+          y: startY || window.innerHeight / 2,
+          vx: Math.cos(angle) * velocity,
+          vy: Math.sin(angle) * velocity - 3,
+          gravity: 0.28,
+          friction: 0.96,
+          size: randomBetween(5, 10),
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          rotationSpeed: randomBetween(-8, 8),
+          opacity: 1
+        });
+      }
+    }
+
+    function animateConfetti() {
+      cCtx.clearRect(0, 0, cCanvas.width, cCanvas.height);
+      confettiList = confettiList.filter(c => c.opacity > 0.02);
+
+      confettiList.forEach(c => {
+        c.vx *= c.friction;
+        c.vy = (c.vy + c.gravity) * c.friction;
+        c.x += c.vx;
+        c.y += c.vy;
+        c.rotation += c.rotationSpeed;
+        c.opacity -= 0.012;
+
+        cCtx.save();
+        cCtx.translate(c.x, c.y);
+        cCtx.rotate((c.rotation * Math.PI) / 180);
+        cCtx.globalAlpha = Math.max(0, c.opacity);
+        cCtx.fillStyle = c.color;
+        cCtx.fillRect(-c.size / 2, -c.size / 2, c.size, c.size * 0.7);
+        cCtx.restore();
+      });
+
+      requestAnimationFrame(animateConfetti);
+    }
+    animateConfetti();
+
+    /* Trigger Confetti Button & Title Click */
+    document.getElementById("triggerEffectBtn").addEventListener("click", () => {
+      fireConfetti(window.innerWidth / 2, window.innerHeight * 0.6);
+    });
+
+    document.getElementById("greetingTitle").addEventListener("click", (e) => {
+      fireConfetti(e.clientX, e.clientY);
+    });
+
+    /* =========================================================
+       SPARKLE CURSOR / TOUCH TRAIL (OPSI 3)
+       ========================================================= */
+    let lastSpawn = 0;
+    function spawnSparkle(x, y) {
+      if (!document.body.classList.contains("theme-celebration")) return;
+      const now = performance.now();
+      if (now - lastSpawn < 35) return; // throttle
+      lastSpawn = now;
+
+      const p = document.createElement("div");
+      p.className = "sparkle-particle";
+      p.style.left = `${x}px`;
+      p.style.top = `${y}px`;
+      p.style.setProperty("--dx", `${randomBetween(-24, 24)}px`);
+      p.style.setProperty("--dy", `${randomBetween(-24, 24)}px`);
+
+      const isStar = Math.random() > 0.4;
+      p.innerHTML = isStar
+        ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="#d7b27b"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6Z"/></svg>`
+        : `<svg width="14" height="14" viewBox="0 0 24 24" fill="#f7eddb"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 850);
+    }
+
+    window.addEventListener("pointermove", (e) => spawnSparkle(e.clientX, e.clientY));
+    window.addEventListener("touchmove", (e) => {
+      if (e.touches[0]) spawnSparkle(e.touches[0].clientX, e.touches[0].clientY);
+    });
+
+  })();
+  </script>
+</body>
+</html>

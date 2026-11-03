@@ -106,6 +106,16 @@ body::after {
 .greeting__hbd {
   display: block;
   font-size: clamp(5rem, 15vw, 13rem);
+  background: linear-gradient(110deg, #f7eddb 20%, #ffffff 40%, #d7b27b 50%, #f7eddb 70%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gold-sweep 4.5s linear infinite;
+  filter: drop-shadow(0 4px 18px rgba(215, 178, 123, 0.35));
+}
+
+@keyframes gold-sweep {
+  to { background-position: 200% center; }
 }
 
 .greeting__name {
@@ -117,6 +127,32 @@ body::after {
   font-style: normal;
   letter-spacing: -0.015em;
   line-height: 0.88;
+  text-shadow: 0 0 16px rgba(215, 178, 123, 0.65), 0 0 32px rgba(144, 69, 58, 0.5);
+  animation: name-pulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes name-pulse {
+  0% { filter: brightness(1); }
+  100% { filter: brightness(1.22) drop-shadow(0 0 12px rgba(215, 178, 123, 0.6)); }
+}
+
+/* ---------------------------------------------------------
+   Rose Petals & Burst Explosion Canvases
+   --------------------------------------------------------- */
+
+.petals-canvas,
+.burst-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.petals-canvas {
+  z-index: 32;
+}
+
+.burst-canvas {
+  z-index: 70;
 }
 
 /* ---------------------------------------------------------
@@ -134,13 +170,23 @@ body::after {
 
 .bone-heart {
   position: absolute;
-  opacity: 0.07;
+  opacity: 0.12;
+  filter: drop-shadow(0 0 10px rgba(215, 178, 123, 0.4)) drop-shadow(0 0 22px rgba(180, 60, 80, 0.25));
   animation: bone-float 20s ease-in-out infinite alternate;
 }
 
 .bone-heart svg {
   width: 100%;
   height: 100%;
+  animation: bone-heartbeat 4s ease-in-out infinite;
+}
+
+@keyframes bone-heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.08); filter: drop-shadow(0 0 16px rgba(230, 190, 130, 0.65)); }
+  28% { transform: scale(1.02); }
+  42% { transform: scale(1.12); filter: drop-shadow(0 0 20px rgba(220, 80, 95, 0.55)); }
+  56% { transform: scale(1); }
 }
 
 /* Positions — scattered across the entire viewport */
@@ -275,10 +321,11 @@ body.viewer-open .rise-photo__sway {
   background:
     linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(245, 233, 215, 0.99)),
     var(--paper);
-  border: 1px solid rgba(116, 79, 46, 0.16);
+  border: 1px solid rgba(215, 178, 123, 0.45);
   box-shadow:
-    0 28px 54px -24px rgba(0, 0, 0, 0.75),
-    0 3px 10px -5px rgba(0, 0, 0, 0.4);
+    0 24px 50px rgba(0, 0, 0, 0.75),
+    0 8px 18px rgba(0, 0, 0, 0.48),
+    0 0 24px rgba(144, 69, 58, 0.32);
 }
 
 .rise-photo__frame::after {
@@ -460,8 +507,14 @@ audio {
   background:
     linear-gradient(180deg, rgba(255, 253, 248, 0.99), rgba(245, 233, 215, 1)),
     var(--paper);
-  border: 1px solid rgba(116, 79, 46, 0.2);
-  box-shadow: 0 48px 120px rgba(0, 0, 0, 0.62);
+  border: 1px solid rgba(215, 178, 123, 0.45);
+  box-shadow: 0 48px 120px rgba(0, 0, 0, 0.75), 0 0 35px rgba(215, 178, 123, 0.25);
+  transform: scale(0.85);
+  transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.25);
+}
+
+.viewer.is-open .viewer__frame {
+  transform: scale(1);
 }
 
 .viewer__frame img {
@@ -581,6 +634,10 @@ audio {
     <div class="bone-heart bh17"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="37" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="46" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 31 C38 33,22 38,15 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M52 31 C62 33,78 38,85 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 40 C38 42,20 48,13 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 40 C62 42,80 48,87 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
     <div class="bone-heart bh18"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="32" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="40" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><rect x="48" y="48" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 35 C40 37,28 40,22 38" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 35 C60 37,72 40,78 38" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><circle cx="22" cy="38" r="1.5" stroke="currentColor" stroke-width=".5" fill="none" opacity=".25"/><circle cx="78" cy="38" r="1.5" stroke="currentColor" stroke-width=".5" fill="none" opacity=".25"/></svg></div>
   </div>
+
+  <!-- Rose Petals & Explosion Canvases -->
+  <canvas id="petalsCanvas" class="petals-canvas" aria-hidden="true"></canvas>
+  <canvas id="burstCanvas" class="burst-canvas" aria-hidden="true"></canvas>
 
   <main class="rain" id="rain" aria-label="Hujan foto kenangan"></main>
 
@@ -731,6 +788,169 @@ audio {
   }
 
   /* -------------------------------------------------------
+     Rose Petals Animation
+     ------------------------------------------------------- */
+  const petalsCanvas = document.getElementById("petalsCanvas");
+  if (petalsCanvas) {
+    const pCtx = petalsCanvas.getContext("2d");
+    let petals = [];
+
+    function resizePetals() {
+      petalsCanvas.width = window.innerWidth;
+      petalsCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizePetals);
+    resizePetals();
+
+    const petalCount = window.matchMedia("(max-width: 700px)").matches ? 18 : 28;
+    for (let i = 0; i < petalCount; i++) {
+      petals.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        size: randomBetween(8, 16),
+        speedY: randomBetween(0.8, 1.8),
+        speedX: randomBetween(-0.8, 0.8),
+        angle: Math.random() * 360,
+        angularSpeed: randomBetween(-1.5, 1.5),
+        opacity: randomBetween(0.35, 0.75)
+      });
+    }
+
+    function animatePetals() {
+      if (!reducedMotionQuery.matches) {
+        pCtx.clearRect(0, 0, petalsCanvas.width, petalsCanvas.height);
+        petals.forEach((p) => {
+          p.y += p.speedY;
+          p.x += Math.sin(p.y * 0.015) * p.speedX;
+          p.angle += p.angularSpeed;
+
+          if (p.y > petalsCanvas.height + 20) {
+            p.y = -20;
+            p.x = Math.random() * petalsCanvas.width;
+          }
+
+          pCtx.save();
+          pCtx.translate(p.x, p.y);
+          pCtx.rotate((p.angle * Math.PI) / 180);
+          pCtx.globalAlpha = p.opacity;
+
+          pCtx.beginPath();
+          pCtx.moveTo(0, 0);
+          pCtx.bezierCurveTo(-p.size / 2, -p.size / 2, -p.size / 2, p.size / 2, 0, p.size);
+          pCtx.bezierCurveTo(p.size / 2, p.size / 2, p.size / 2, -p.size / 2, 0, 0);
+          pCtx.fillStyle = "#8a2434";
+          pCtx.fill();
+
+          pCtx.restore();
+        });
+      }
+      requestAnimationFrame(animatePetals);
+    }
+    animatePetals();
+  }
+
+  /* -------------------------------------------------------
+     Photo Open Burst Animation
+     ------------------------------------------------------- */
+  const burstCanvas = document.getElementById("burstCanvas");
+  let fireBurst = () => {};
+
+  if (burstCanvas) {
+    const bCtx = burstCanvas.getContext("2d");
+    let burstParticles = [];
+
+    function resizeBurst() {
+      burstCanvas.width = window.innerWidth;
+      burstCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeBurst);
+    resizeBurst();
+
+    fireBurst = (originX, originY) => {
+      if (reducedMotionQuery.matches) return;
+      const x = originX || window.innerWidth / 2;
+      const y = originY || window.innerHeight / 2;
+      const colors = ["#d7b27b", "#f7eddb", "#e04b63", "#ffffff", "#b88a50", "#9b2c3d"];
+      const count = window.matchMedia("(max-width: 700px)").matches ? 70 : 105;
+
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = randomBetween(4, 16);
+        const type = Math.random();
+        burstParticles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 2.5,
+          gravity: 0.28,
+          friction: 0.96,
+          size: randomBetween(6, 12),
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          rotationSpeed: randomBetween(-9, 9),
+          opacity: 1,
+          shape: type < 0.5 ? "rect" : type < 0.8 ? "star" : "heart"
+        });
+      }
+    };
+
+    function drawStar(ctx, size) {
+      ctx.beginPath();
+      for (let i = 0; i < 4; i++) {
+        ctx.lineTo(Math.cos(((18 + i * 90) * Math.PI) / 180) * size, -Math.sin(((18 + i * 90) * Math.PI) / 180) * size);
+        ctx.lineTo(Math.cos(((63 + i * 90) * Math.PI) / 180) * (size * 0.35), -Math.sin(((63 + i * 90) * Math.PI) / 180) * (size * 0.35));
+      }
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function drawHeart(ctx, size) {
+      ctx.beginPath();
+      const topCurveHeight = size * 0.3;
+      ctx.moveTo(0, topCurveHeight);
+      ctx.bezierCurveTo(0, 0, -size / 2, 0, -size / 2, topCurveHeight);
+      ctx.bezierCurveTo(-size / 2, (size + topCurveHeight) / 2, 0, size, 0, size * 1.15);
+      ctx.bezierCurveTo(0, size, size / 2, (size + topCurveHeight) / 2, size / 2, topCurveHeight);
+      ctx.bezierCurveTo(size / 2, 0, 0, 0, 0, topCurveHeight);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function animateBurst() {
+      bCtx.clearRect(0, 0, burstCanvas.width, burstCanvas.height);
+      burstParticles = burstParticles.filter((p) => p.opacity > 0.02);
+
+      burstParticles.forEach((p) => {
+        p.vx *= p.friction;
+        p.vy = (p.vy + p.gravity) * p.friction;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rotation += p.rotationSpeed;
+        p.opacity -= 0.013;
+
+        bCtx.save();
+        bCtx.translate(p.x, p.y);
+        bCtx.rotate((p.rotation * Math.PI) / 180);
+        bCtx.globalAlpha = Math.max(0, p.opacity);
+        bCtx.fillStyle = p.color;
+
+        if (p.shape === "rect") {
+          bCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+        } else if (p.shape === "star") {
+          drawStar(bCtx, p.size);
+        } else {
+          drawHeart(bCtx, p.size);
+        }
+
+        bCtx.restore();
+      });
+
+      requestAnimationFrame(animateBurst);
+    }
+    animateBurst();
+  }
+
+  /* -------------------------------------------------------
      Penampil foto
      ------------------------------------------------------- */
 
@@ -742,6 +962,11 @@ audio {
     viewerTrigger = trigger || null;
     viewerImage.src = src;
     viewerImage.alt = alt || "";
+
+    const rect = trigger ? trigger.getBoundingClientRect() : null;
+    const originX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const originY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+    fireBurst(originX, originY);
 
     viewer.inert = false;
     viewer.removeAttribute("aria-hidden");
@@ -774,6 +999,11 @@ audio {
 
   viewerClose?.addEventListener("click", closeViewer);
   viewerBackdrop?.addEventListener("click", closeViewer);
+
+  const greetingTitle = document.querySelector(".greeting__title");
+  greetingTitle?.addEventListener("click", (e) => {
+    fireBurst(e.clientX, e.clientY);
+  });
 
   viewer?.addEventListener("keydown", (event) => {
     if (event.key === "Tab") {
