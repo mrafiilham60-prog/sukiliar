@@ -17,10 +17,6 @@
     { src: "assets/foto4.webp", alt: "Foto kenangan 4" },
     { src: "assets/foto5.webp", alt: "Foto kenangan 5" },
     { src: "assets/foto6.webp", alt: "Foto kenangan 6" },
-    { src: "assets/WhatsApp Image 2026-10-11 at 19.24.35.jpeg", alt: "Foto kenangan 7" },
-    { src: "assets/kenangan-1.svg", alt: "Foto kenangan 8" },
-    { src: "assets/kenangan-2.svg", alt: "Foto kenangan 9" },
-    { src: "assets/kenangan-3.svg", alt: "Foto kenangan 10" },
   ];
 
   const randomBetween = (min, max) => min + Math.random() * (max - min);
@@ -32,10 +28,10 @@
 
     const isStatic = reducedMotionQuery.matches;
     const compact = window.matchMedia("(max-width: 700px)").matches;
-    const total = isStatic ? photos.length : (compact ? 20 : 30);
-    const lanes = compact ? 5 : 7;
+    const total = isStatic ? photos.length : (compact ? 30 : 44);
+    const lanes = compact ? 6 : 8;
     const slotsPerLane = Math.ceil(total / lanes);
-    const laneSpan = compact ? 71 : 77;
+    const laneSpan = compact ? 72 : 78;
     const offset = Math.floor(Math.random() * photos.length);
     const fragment = document.createDocumentFragment();
 
@@ -56,10 +52,10 @@
 
       const lane = index % lanes;
       const slot = Math.floor(index / lanes);
-      const duration = randomBetween(15, 24);
+      const duration = randomBetween(8, 14);
       const phase = (slot + randomBetween(0.05, 0.45)) / slotsPerLane;
       const delay = -phase * duration;
-      const swayDuration = randomBetween(5, 8);
+      const swayDuration = randomBetween(4, 7);
       const swayDelay = -randomBetween(0, swayDuration);
 
       // Satu lintasan horizontal per lane, dengan fase vertikal yang berjarak.
