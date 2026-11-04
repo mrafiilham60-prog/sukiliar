@@ -11,7 +11,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Caveat:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lobster&family=Sacramento&family=Caveat:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -50,23 +50,25 @@
 
   <main class="rain" id="rain" aria-label="Hujan foto kenangan"></main>
 
+  <div class="start-hint" id="startHint" aria-hidden="true">Ketuk layar untuk memulai 🎵</div>
+
   <audio id="song" loop preload="auto" playsinline>
     <source src="assets/diri-tulus.mp3" type="audio/mpeg">
     <source src="assets/lagu.wav" type="audio/wav">
   </audio>
 
   <button class="music" id="musicToggle" type="button" aria-label="Putar musik" aria-pressed="false" hidden>
-    <svg class="music__icon music__icon--on" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M9 17.5V6.2l9-1.8v10.7" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-      <ellipse cx="6.6" cy="17.6" rx="2.7" ry="2.25" fill="currentColor"/>
-      <ellipse cx="15.6" cy="15.8" rx="2.7" ry="2.25" fill="currentColor"/>
-    </svg>
-    <svg class="music__icon music__icon--off" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M9 17.5V6.2l9-1.8v10.7" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-      <ellipse cx="6.6" cy="17.6" rx="2.7" ry="2.25" fill="currentColor"/>
-      <ellipse cx="15.6" cy="15.8" rx="2.7" ry="2.25" fill="currentColor"/>
-      <path d="M4 4.5 20 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    </svg>
+    <div class="vinyl-disc" aria-hidden="true"></div>
+    <div class="vinyl-info" aria-hidden="true">
+      <span class="vinyl-song">Diri</span>
+      <span class="vinyl-artist">Tulus 🎵</span>
+    </div>
+    <div class="vinyl-bars" aria-hidden="true">
+      <div class="vinyl-bar"></div>
+      <div class="vinyl-bar"></div>
+      <div class="vinyl-bar"></div>
+      <div class="vinyl-bar"></div>
+    </div>
   </button>
 
   <div class="viewer" id="photoViewer" role="dialog" aria-modal="true" aria-label="Foto kenangan" aria-hidden="true" inert>

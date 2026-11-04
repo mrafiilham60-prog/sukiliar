@@ -79,10 +79,11 @@ body::after {
   position: relative;
   margin: 0;
   color: var(--paper);
-  font-family: "Fraunces", "Bodoni MT", Didot, "Times New Roman", serif;
+  font-family: "Lobster", "Brush Script MT", cursive;
   font-weight: 400;
+  letter-spacing: 0;     /* sebelumnya -0.055em */
   line-height: 0.78;
-  letter-spacing: -0.055em;
+
   text-shadow:
     0 2px 0 rgba(26, 15, 21, 0.2),
     0 10px 46px rgba(0, 0, 0, 0.58);
@@ -90,7 +91,9 @@ body::after {
 
 .greeting__hbd {
   display: block;
-  font-size: clamp(5rem, 15vw, 13rem);
+  font-size: clamp(3.4rem, 10.5vw, 9rem);   /* sebelumnya clamp(5rem, 15vw, 13rem) */
+  line-height: 1.15;                         /* baris baru */
+  padding-bottom: 0.1em;                     /* baris baru */
   background: linear-gradient(110deg, #f7eddb 20%, #ffffff 40%, #d7b27b 50%, #f7eddb 70%);
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -107,11 +110,10 @@ body::after {
   display: block;
   margin-top: clamp(0.25rem, 1.2vh, 0.7rem);
   color: var(--gold);
-  font-family: "Caveat", cursive;
-  font-size: clamp(3.2rem, 9vw, 7.8rem);
-  font-style: normal;
-  letter-spacing: -0.015em;
-  line-height: 0.88;
+  font-family: "Sacramento", cursive;
+  font-size: clamp(3.8rem, 11vw, 8.5rem);
+  letter-spacing: 0;
+  line-height: 1;
   text-shadow: 0 0 16px rgba(215, 178, 123, 0.65), 0 0 32px rgba(144, 69, 58, 0.5);
   animation: name-pulse 3s ease-in-out infinite alternate;
 }
@@ -389,7 +391,7 @@ body.viewer-open .rise-photo__sway {
 }
 
 /* ---------------------------------------------------------
-   Ikon musik — tanpa teks
+   Pemutar Musik — Vinyl Record Player & Floating Quotes
    --------------------------------------------------------- */
 
 audio {
@@ -401,20 +403,22 @@ audio {
   right: max(1rem, env(safe-area-inset-right));
   bottom: max(1rem, env(safe-area-inset-bottom));
   z-index: 40;
-  display: grid;
-  width: 3.15rem;
-  height: 3.15rem;
-  padding: 0;
-  place-items: center;
-  color: rgba(247, 237, 219, 0.84);
-  background: rgba(24, 13, 18, 0.5);
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(22, 12, 18, 0.92);
+  border: 1px solid rgba(215, 178, 123, 0.45);
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem 0.45rem 0.5rem;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(215, 178, 123, 0.2);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   cursor: pointer;
+  touch-action: manipulation;
+  width: auto;
+  height: auto;
+  color: #f7eddb;
+  transition: all 0.3s ease;
 }
 
 .music[hidden] {
@@ -422,8 +426,9 @@ audio {
 }
 
 .music:hover {
-  color: #fffaf0;
-  background: rgba(24, 13, 18, 0.72);
+  transform: scale(1.04);
+  border-color: rgba(215, 178, 123, 0.85);
+  background: rgba(26, 15, 21, 0.96);
 }
 
 .music:focus-visible {
@@ -431,18 +436,138 @@ audio {
   outline-offset: 4px;
 }
 
-.music__icon {
-  display: none;
-  width: 1.35rem;
-  height: 1.35rem;
+.vinyl-disc {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2a1b22 18%, #111 20%, #1a1a1a 40%, #111 60%, #222 80%, #0d0d0d 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(215, 178, 123, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.music.is-playing .music__icon--on {
-  display: block;
+.vinyl-disc::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d7b27b;
+  border: 2px solid #1a0f15;
 }
 
-.music:not(.is-playing) .music__icon--off {
-  display: block;
+.music.is-playing .vinyl-disc {
+  animation: spinVinyl 3.5s linear infinite;
+}
+
+@keyframes spinVinyl {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.vinyl-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  pointer-events: none;
+}
+
+.vinyl-song {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #f7eddb;
+  line-height: 1.2;
+}
+
+.vinyl-artist {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 0.7rem;
+  color: #d7b27b;
+  line-height: 1.2;
+}
+
+.vinyl-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+  margin-left: 0.25rem;
+  pointer-events: none;
+}
+
+.vinyl-bar {
+  width: 3px;
+  background: #d7b27b;
+  border-radius: 2px;
+  height: 4px;
+  transition: height 0.2s ease;
+}
+
+.music.is-playing .vinyl-bars .vinyl-bar:nth-child(1) { animation: barDance 0.8s ease-in-out infinite alternate; }
+.music.is-playing .vinyl-bars .vinyl-bar:nth-child(2) { animation: barDance 0.6s ease-in-out 0.2s infinite alternate; }
+.music.is-playing .vinyl-bars .vinyl-bar:nth-child(3) { animation: barDance 0.9s ease-in-out 0.4s infinite alternate; }
+.music.is-playing .vinyl-bars .vinyl-bar:nth-child(4) { animation: barDance 0.7s ease-in-out 0.1s infinite alternate; }
+
+@keyframes barDance {
+  0% { height: 4px; }
+  100% { height: 16px; }
+}
+
+/* ---------------------------------------------------------
+   Pesan & Doa Melayang (Floating Quotes)
+   --------------------------------------------------------- */
+
+
+/* Lapisan khusus teks ucapan: di atas foto melayang (z 2), di bawah penampil foto (z 10) */
+.quote-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.quote-bubble {
+  position: fixed;
+  bottom: -70px;
+  padding: 0.6rem 1.15rem;
+  background: rgba(26, 15, 21, 0.94);
+  border: 1px solid rgba(215, 178, 123, 0.6);
+  border-radius: 999px;
+  color: #fff6e3;
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 16px rgba(215, 178, 123, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: floatQuote linear infinite;
+  z-index: 1;
+}
+
+@keyframes floatQuote {
+  0% {
+    transform: translateY(0) scale(0.9);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.95;
+  }
+  85% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(calc(-100vh - 140px)) scale(1);
+    opacity: 0;
+  }
 }
 
 /* ---------------------------------------------------------
@@ -452,7 +577,7 @@ audio {
 .viewer {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 10;
   display: grid;
   place-items: center;
   visibility: hidden;
@@ -557,16 +682,33 @@ audio {
   }
 
   .greeting__hbd {
-    font-size: clamp(4.8rem, 20vw, 7.2rem);
-  }
+  font-size: clamp(2.8rem, 14vw, 5rem);
+}
 
-  .greeting__name {
-    font-size: clamp(3rem, 13.5vw, 5rem);
-  }
-
+.greeting__name {
+  font-size: clamp(3.4rem, 16vw, 5.5rem);
+}
   .music {
-    width: 3rem;
-    height: 3rem;
+    padding: 0.35rem 0.85rem 0.35rem 0.4rem;
+    gap: 0.6rem;
+  }
+
+  .vinyl-disc {
+    width: 36px;
+    height: 36px;
+  }
+
+  .vinyl-disc::before {
+    width: 12px;
+    height: 12px;
+  }
+
+  .vinyl-song {
+    font-size: 0.74rem;
+  }
+
+  .vinyl-artist {
+    font-size: 0.65rem;
   }
 
   .rain.is-static {
@@ -586,4 +728,38 @@ audio {
   .rise-photo__sway {
     animation: none;
   }
+}
+
+
+/* ---------------------------------------------------------
+   Petunjuk awal (hilang saat lagu & foto dimulai)
+   --------------------------------------------------------- */
+.start-hint {
+  position: fixed;
+  left: 50%;
+  bottom: calc(14% + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 36;
+  padding: 0.55rem 1.2rem;
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  color: #f7eddb;
+  background: rgba(26, 15, 21, 0.75);
+  border: 1px solid rgba(215, 178, 123, 0.5);
+  border-radius: 999px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: start-hint-pulse 1.8s ease-in-out infinite;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+body.is-started .start-hint {
+  opacity: 0;
+  visibility: hidden;
+  animation: none;
+}
+
+@keyframes start-hint-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
 }

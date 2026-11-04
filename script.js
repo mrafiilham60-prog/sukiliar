@@ -28,8 +28,9 @@
 
     const isStatic = reducedMotionQuery.matches;
     const compact = window.matchMedia("(max-width: 700px)").matches;
-    const total = isStatic ? photos.length : (compact ? 30 : 44);
-    const lanes = compact ? 6 : 8;
+    const total = isStatic ? photos.length : (compact ? 24 : 40);
+    const lanes = compact ? 5 : 8;
+    const laneStride = compact ? 2 : 3; // lompat antar lintasan agar foto beruntun tidak bersebelahan
     const slotsPerLane = Math.ceil(total / lanes);
     const laneSpan = compact ? 72 : 78;
     const offset = Math.floor(Math.random() * photos.length);
@@ -50,12 +51,12 @@
           ? randomBetween(60, 94)
           : randomBetween(86, 140);
 
-      const lane = index % lanes;
+      const lane = (index * laneStride) % lanes;
       const slot = Math.floor(index / lanes);
-      const duration = randomBetween(8, 14);
-      const phase = (slot + randomBetween(0.05, 0.45)) / slotsPerLane;
-      const delay = -phase * duration;
-      const swayDuration = randomBetween(4, 7);
+      const duration = randomBetween(12, 20);
+      // Foto muncul satu per satu (delay positif berurutan), jadi hujan menebal perlahan.
+      const delay = 0.4 + index * (compact ? 1 : 0.7) + randomBetween(0, 0.6);
+      const swayDuration = randomBetween(5, 8);
       const swayDelay = -randomBetween(0, swayDuration);
 
       // Satu lintasan horizontal per lane, dengan fase vertikal yang berjarak.
@@ -372,14 +373,86 @@
     if (musicButton.contains(event.target)) return;
 
     removeUnlockListeners();
+    startExperience();
     if (audio.paused) {
       attemptPlay();
     }
   }
 
-  if (rain) {
-    reducedMotionQuery.addEventListener?.("change", buildPhotoRain);
-    buildPhotoRain();
+  /* -------------------------------------------------------
+     Pesan & Doa Melayang
+     ------------------------------------------------------- */
+  const quotes = [
+    "✨ Panjang umur & sehat selalu!",
+    "🥂 Bahagia di setiap langkahmu!",
+    "🌟 Sukses untuk semua impianmu!",
+    "🤍 Selalu jadi teman yang terbaik!",
+    "🎂 Happy Birthday, Kawann!",
+    "🌸 Semoga harimu penuh senyuman!"
+  ];
+
+  function startFloatingQuotes() {
+    let quoteLayer = document.getElementById("quoteLayer");
+    if (!quoteLayer) {
+      quoteLayer = document.createElement("div");
+      quoteLayer.id = "quoteLayer";
+      quoteLayer.className = "quote-layer";
+      quoteLayer.setAttribute("aria-hidden", "true");
+      document.body.appendChild(quoteLayer);
+    }
+
+    if (reducedMotionQuery.matches || !rain) return;
+
+    let quoteSide = false;
+
+    function spawnQuote() {
+      const bubble = document.createElement("div");
+      bubble.className = "quote-bubble";
+      bubble.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+      const duration = randomBetween(15, 20);
+      bubble.style.animationDuration = `${duration}s`;
+
+      quoteLayer.appendChild(bubble);
+
+      // Ukur lebar gelembung supaya tidak terpotong di tepi layar, dan
+      // geser bergantian ke sisi kiri/kanan agar tidak bertumpuk.
+      const margin = 12;
+      const maxLeft = Math.max(margin, window.innerWidth - bubble.offsetWidth - margin);
+      const half = Math.max(0, (maxLeft - margin) / 2);
+      quoteSide = !quoteSide;
+      const minX = margin + (quoteSide ? half : 0);
+      const left = minX + Math.random() * half;
+      bubble.style.left = `${Math.min(maxLeft, left)}px`;
+      setTimeout(() => bubble.remove(), duration * 1000);
+    }
+
+    setInterval(spawnQuote, 3800);
+    setTimeout(spawnQuote, 3500);
+  }
+
+  /* -------------------------------------------------------
+     Mulai: foto & ucapan baru muncul setelah lagu berjalan
+     (otomatis bila autoplay diizinkan, atau saat layar diketuk pertama kali)
+     ------------------------------------------------------- */
+  let started = false;
+
+  function startExperience() {
+    if (started) return;
+    started = true;
+    document.body.classList.add("is-started");
+    if (rain) {
+      buildPhotoRain();
+      startFloatingQuotes();
+    }
+  }
+
+  reducedMotionQuery.addEventListener?.("change", () => {
+    if (started) buildPhotoRain();
+  });
+
+  if (!(audio && musicButton)) {
+    startExperience();
   }
 
   if (audio && musicButton) {
@@ -392,6 +465,7 @@
 
     musicButton.addEventListener("click", () => {
       removeUnlockListeners();
+      startExperience();
 
       if (audio.paused) {
         attemptPlay();
@@ -401,6 +475,7 @@
     });
 
     audio.addEventListener("play", syncMusicState);
+    audio.addEventListener("play", startExperience);
     audio.addEventListener("pause", syncMusicState);
     audio.addEventListener("ended", syncMusicState);
 
