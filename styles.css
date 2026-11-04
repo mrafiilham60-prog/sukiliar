@@ -400,9 +400,10 @@ audio {
 
 .music {
   position: fixed;
-  right: max(1rem, env(safe-area-inset-right));
+  left: 50%;
+  transform: translateX(-50%);
   bottom: max(1rem, env(safe-area-inset-bottom));
-  z-index: 40;
+  z-index: 160;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -426,7 +427,7 @@ audio {
 }
 
 .music:hover {
-  transform: scale(1.04);
+  transform: translateX(-50%) scale(1.04);
   border-color: rgba(215, 178, 123, 0.85);
   background: rgba(26, 15, 21, 0.96);
 }
