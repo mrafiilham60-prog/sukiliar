@@ -79,11 +79,10 @@ body::after {
   position: relative;
   margin: 0;
   color: var(--paper);
-  font-family: "Lobster", "Brush Script MT", cursive;
+  font-family: "Fraunces", "Bodoni MT", Didot, "Times New Roman", serif;
   font-weight: 400;
-  letter-spacing: 0;     /* sebelumnya -0.055em */
   line-height: 0.78;
-
+  letter-spacing: -0.055em;
   text-shadow:
     0 2px 0 rgba(26, 15, 21, 0.2),
     0 10px 46px rgba(0, 0, 0, 0.58);
@@ -91,9 +90,7 @@ body::after {
 
 .greeting__hbd {
   display: block;
-  font-size: clamp(3.4rem, 10.5vw, 9rem);   /* sebelumnya clamp(5rem, 15vw, 13rem) */
-  line-height: 1.15;                         /* baris baru */
-  padding-bottom: 0.1em;                     /* baris baru */
+  font-size: clamp(5rem, 15vw, 13rem);
   background: linear-gradient(110deg, #f7eddb 20%, #ffffff 40%, #d7b27b 50%, #f7eddb 70%);
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -110,10 +107,11 @@ body::after {
   display: block;
   margin-top: clamp(0.25rem, 1.2vh, 0.7rem);
   color: var(--gold);
-  font-family: "Sacramento", cursive;
-  font-size: clamp(3.8rem, 11vw, 8.5rem);
-  letter-spacing: 0;
-  line-height: 1;
+  font-family: "Caveat", cursive;
+  font-size: clamp(3.2rem, 9vw, 7.8rem);
+  font-style: normal;
+  letter-spacing: -0.015em;
+  line-height: 0.88;
   text-shadow: 0 0 16px rgba(215, 178, 123, 0.65), 0 0 32px rgba(144, 69, 58, 0.5);
   animation: name-pulse 3s ease-in-out infinite alternate;
 }
@@ -400,10 +398,9 @@ audio {
 
 .music {
   position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
+  right: max(1rem, env(safe-area-inset-right));
   bottom: max(1rem, env(safe-area-inset-bottom));
-  z-index: 160;
+  z-index: 40;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -427,7 +424,7 @@ audio {
 }
 
 .music:hover {
-  transform: translateX(-50%) scale(1.04);
+  transform: scale(1.04);
   border-color: rgba(215, 178, 123, 0.85);
   background: rgba(26, 15, 21, 0.96);
 }
@@ -683,12 +680,13 @@ audio {
   }
 
   .greeting__hbd {
-  font-size: clamp(2.8rem, 14vw, 5rem);
-}
+    font-size: clamp(4.8rem, 20vw, 7.2rem);
+  }
 
-.greeting__name {
-  font-size: clamp(3.4rem, 16vw, 5.5rem);
-}
+  .greeting__name {
+    font-size: clamp(3rem, 13.5vw, 5rem);
+  }
+
   .music {
     padding: 0.35rem 0.85rem 0.35rem 0.4rem;
     gap: 0.6rem;
@@ -738,7 +736,7 @@ audio {
 .start-hint {
   position: fixed;
   left: 50%;
-  bottom: calc(14% + env(safe-area-inset-bottom, 0px));
+  bottom: calc(max(1rem, env(safe-area-inset-bottom, 0px)) + 5.4rem);
   transform: translateX(-50%);
   z-index: 36;
   padding: 0.55rem 1.2rem;
@@ -763,4 +761,212 @@ body.is-started .start-hint {
 @keyframes start-hint-pulse {
   0%, 100% { opacity: 0.55; }
   50% { opacity: 1; }
+}
+
+/* ---------------------------------------------------------
+   Sebelum vinyl ditekan: hanya vinyl (dan petunjuk) yang tampil
+   --------------------------------------------------------- */
+body:not(.is-started) .greeting,
+body:not(.is-started) .bone-hearts,
+body:not(.is-started) .petals-canvas,
+body:not(.is-started) .burst-canvas,
+body:not(.is-started) .rain {
+  visibility: hidden;
+}
+
+/* Setelah ditekan: tulisan ucapan muncul lebih dulu, lalu latar menyusul */
+body.is-started .greeting {
+  animation: reveal-in 1.4s ease 0.3s both;
+}
+
+body.is-started .bone-hearts,
+body.is-started .petals-canvas,
+body.is-started .burst-canvas {
+  animation: reveal-in 1.8s ease 1.2s both;
+}
+
+@keyframes reveal-in {
+  from { opacity: 0; }
+}
+
+/* Vinyl berdenyut lembut sebagai ajakan untuk ditekan */
+body:not(.is-started) .music {
+  animation: vinyl-call 1.8s ease-in-out infinite;
+}
+
+@keyframes vinyl-call {
+  0%, 100% { box-shadow: 0 14px 35px rgba(0, 0, 0, 0.7), 0 0 14px rgba(215, 178, 123, 0.25); }
+  50% { box-shadow: 0 14px 35px rgba(0, 0, 0, 0.7), 0 0 34px rgba(215, 178, 123, 0.85); }
+}
+
+/* ---------------------------------------------------------
+   Vinyl: awalnya di tengah layar, turun ke tengah bawah saat ditekan
+   --------------------------------------------------------- */
+:root {
+  /* jarak naik dari posisi bawah ke tengah layar (dihitung dari tinggi layar) */
+  --vinyl-lift: calc(-50vh + 50% + max(1rem, env(safe-area-inset-bottom, 0px)));
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --vinyl-lift: calc(-50dvh + 50% + max(1rem, env(safe-area-inset-bottom, 0px)));
+  }
+}
+
+/* posisi akhir: tengah bawah */
+.music {
+  left: 50%;
+  right: auto;
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 0);
+}
+
+.music:hover {
+  transform: translate(-50%, 0) scale(1.04);
+}
+
+/* posisi awal: tengah layar, sebelum ditekan */
+body:not(.is-started) .music {
+  transform: translate(-50%, var(--vinyl-lift));
+}
+
+body:not(.is-started) .music:hover {
+  transform: translate(-50%, var(--vinyl-lift)) scale(1.04);
+}
+
+/* saat ditekan: meluncur turun ke bawah */
+body.is-started .music {
+  animation: vinyl-drop 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes vinyl-drop {
+  from { transform: translate(-50%, var(--vinyl-lift)); }
+}
+
+/* petunjuk tepat di atas vinyl yang berada di tengah layar */
+.start-hint {
+  bottom: calc(50% + 2.6rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.is-started .music { animation: none; }
+}
+
+/* ---------------------------------------------------------
+   Foto: sembunyikan bingkai sampai gambarnya siap, lalu muncul halus
+   --------------------------------------------------------- */
+.rise-photo.is-loading {
+  visibility: hidden;
+}
+
+.rise-photo:not(.is-loading) .rise-photo__frame {
+  animation: frame-in 0.8s ease both;
+}
+
+@keyframes frame-in {
+  from { opacity: 0; }
+}
+
+/* ---------------------------------------------------------
+   Judul: Lily Script One (manis, feminin)
+   --------------------------------------------------------- */
+.greeting__title {
+  font-family: "Lily Script One", "Brush Script MT", cursive;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.greeting__hbd {
+  font-size: clamp(3rem, 11vw, 7.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;       /* huruf lebih rapat */
+  word-spacing: -0.12em;          /* jarak antar kata lebih rapat */
+  padding: 0.04em 0.08em 0.1em;   /* ruang agar lekuk huruf tidak terpotong */
+  text-wrap: balance;
+}
+
+.greeting__name {
+  font-family: "Lily Script One", "Brush Script MT", cursive;
+  font-size: clamp(3.6rem, 14vw, 9rem);
+  color: #ffb8cc;                 /* pink lembut; ganti ke var(--gold) untuk emas */
+  letter-spacing: 0;
+  line-height: 1;
+  margin-top: -0.12em;            /* dekatkan ke baris di atasnya */
+  text-shadow: 0 0 16px rgba(255, 184, 204, 0.6), 0 0 32px rgba(144, 69, 58, 0.5);
+}
+
+@media (max-width: 700px) {
+  .greeting__hbd {
+    font-size: clamp(2.7rem, 12.5vw, 4.3rem);
+  }
+
+  .greeting__name {
+    font-size: clamp(3.4rem, 17vw, 5.6rem);
+  }
+}
+
+/* ---------------------------------------------------------
+   Tipografi: susunan huruf bertingkat
+   "Selamat" (script) menumpuk di atas ULANG / TAHUN (tebal besar),
+   lalu "kawan!" (script) miring menimpa pojok kanan bawah.
+   --------------------------------------------------------- */
+.greeting__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.greeting__pre {
+  position: relative;
+  z-index: 2;
+  display: block;
+  font-family: "Lily Script One", "Brush Script MT", cursive;
+  font-size: clamp(2.2rem, 8vw, 5rem);
+  line-height: 1;
+  letter-spacing: 0;
+  color: #ffb8cc;
+  transform: rotate(-5deg);
+  margin-bottom: -0.3em;
+  text-shadow: 0 0 14px rgba(255, 184, 204, 0.55), 0 0 28px rgba(144, 69, 58, 0.5);
+}
+
+.greeting__hbd {
+  font-family: "Bagel Fat One", "Lily Script One", system-ui, sans-serif;
+  font-size: clamp(3.4rem, 19vw, 9rem);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  word-spacing: 0;
+  padding: 0.04em 0.06em 0.06em;
+}
+
+.greeting__hbd span {
+  display: block;
+}
+
+.greeting__name {
+  position: relative;
+  z-index: 2;
+  margin-top: -0.3em;
+  font-size: clamp(3rem, 12vw, 7rem);
+  line-height: 1;
+  letter-spacing: 0;
+  transform: rotate(-6deg) translateX(14%);
+}
+
+@media (max-width: 700px) {
+  .greeting__pre {
+    font-size: clamp(2.1rem, 10vw, 3.4rem);
+  }
+
+  .greeting__hbd {
+    font-size: clamp(3.2rem, 21vw, 5.6rem);
+  }
+
+  .greeting__name {
+    font-size: clamp(3rem, 15vw, 4.8rem);
+  }
 }
