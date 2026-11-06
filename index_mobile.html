@@ -997,7 +997,7 @@ body.is-started .music {
     <h1 class="greeting__title">
       <span class="greeting__pre">Selamat</span>
       <span class="greeting__hbd"><span>Ulang</span><span>Tahun</span></span>
-      <span class="greeting__name">kak♡</span>
+      <span class="greeting__name">kawan!</span>
     </h1>
   </header>
 
@@ -1477,7 +1477,11 @@ body.is-started .music {
     "🌸 Semoga harimu penuh senyuman!"
   ];
 
+  let quotesRunning = false;
+
   function startFloatingQuotes() {
+    if (quotesRunning) return; // cegah jadwal ucapan ganda, walau terpanggil dua kali
+    quotesRunning = true;
     let quoteLayer = document.getElementById("quoteLayer");
     if (!quoteLayer) {
       quoteLayer = document.createElement("div");

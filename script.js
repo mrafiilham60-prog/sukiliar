@@ -19,6 +19,15 @@
     { src: "assets/foto6.webp", alt: "Foto kenangan 6" },
   ];
 
+  // Muat & decode semua foto lebih dulu (selama layar awal), supaya bingkai putih
+  // tidak muncul kosong sebelum gambarnya siap.
+  photos.forEach((p) => {
+    const img = new Image();
+    img.decoding = "async";
+    img.src = p.src;
+    if (img.decode) img.decode().catch(() => {});
+  });
+
   const randomBetween = (min, max) => min + Math.random() * (max - min);
 
   function buildPhotoRain() {
@@ -28,7 +37,7 @@
 
     const isStatic = reducedMotionQuery.matches;
     const compact = window.matchMedia("(max-width: 700px)").matches;
-    const total = isStatic ? photos.length : (compact ? 24 : 40);
+    const total = isStatic ? photos.length : (compact ? 14 : 24);
     const lanes = compact ? 5 : 8;
     const laneStride = compact ? 2 : 3; // lompat antar lintasan agar foto beruntun tidak bersebelahan
     const slotsPerLane = Math.ceil(total / lanes);
@@ -43,7 +52,7 @@
       const photo = photos[photoIndex];
 
       const card = document.createElement("div");
-      card.className = "rise-photo";
+      card.className = "rise-photo is-loading"; // tersembunyi sampai gambarnya siap
 
       const size = isStatic
         ? 0
@@ -53,17 +62,22 @@
 
       const lane = (index * laneStride) % lanes;
       const slot = Math.floor(index / lanes);
-      const duration = randomBetween(12, 20);
+      const duration = randomBetween(16, 21);
       // Foto muncul satu per satu (delay positif berurutan), jadi hujan menebal perlahan.
-      const delay = 0.4 + index * (compact ? 1 : 0.7) + randomBetween(0, 0.6);
+      const delay = -4.5 + index * (compact ? 1.4 : 1) + randomBetween(0, 0.5);
       const swayDuration = randomBetween(5, 8);
       const swayDelay = -randomBetween(0, swayDuration);
 
       // Satu lintasan horizontal per lane, dengan fase vertikal yang berjarak.
-      const laneStart = lanes === 1 ? 0 : (lane / (lanes - 1)) * laneSpan;
-      const x = Math.min(82, Math.max(0, 1 + laneStart + randomBetween(-1, 2.5)));
+      // Lebar area dikurangi lebar foto, jadi lintasan kiri-kanan terbagi rata
+      // di seluruh lebar layar (foto paling kanan tidak keluar dari tepi).
+      const laneFrac = lanes === 1 ? 0.5 : lane / (lanes - 1);
+      const areaW = Math.max(0, (rain.clientWidth || window.innerWidth) - size);
+      const edge = 0.03; // sisakan sedikit ruang di tepi untuk goyangan foto
+      const frac = Math.min(1, Math.max(0, edge + laneFrac * (1 - 2 * edge) + randomBetween(-0.03, 0.03)));
+      const x = frac * areaW;
 
-      card.style.setProperty("--x", `${x}%`);
+      card.style.setProperty("--x", `${x}px`);
       card.style.setProperty("--size", `${size}px`);
       card.style.setProperty("--duration", `${duration}s`);
       card.style.setProperty("--delay", `${delay}s`);
@@ -94,6 +108,14 @@
       image.loading = "eager";
       image.decoding = "async";
       image.draggable = false;
+
+      const revealCard = () => card.classList.remove("is-loading");
+      if (image.decode) {
+        image.decode().then(revealCard, revealCard);
+      } else {
+        image.addEventListener("load", revealCard, { once: true });
+        image.addEventListener("error", revealCard, { once: true });
+      }
 
       frame.append(image);
       button.append(frame);
@@ -383,7 +405,7 @@
      Pesan & Doa Melayang
      ------------------------------------------------------- */
   const quotes = [
-    "✨ Panjang umur & sehat selalu!",
+    "✨ Semoga selalu dikelilingi orang baik!",
     "🥂 Bahagia di setiap langkahmu!",
     "🌟 Sukses untuk semua impianmu!",
     "🤍 Selalu jadi teman yang terbaik!",
@@ -391,7 +413,11 @@
     "🌸 Semoga harimu penuh senyuman!"
   ];
 
+  let quotesRunning = false;
+
   function startFloatingQuotes() {
+    if (quotesRunning) return; // cegah jadwal ucapan ganda, walau terpanggil dua kali
+    quotesRunning = true;
     let quoteLayer = document.getElementById("quoteLayer");
     if (!quoteLayer) {
       quoteLayer = document.createElement("div");
@@ -408,9 +434,13 @@
     function spawnQuote() {
       const bubble = document.createElement("div");
       bubble.className = "quote-bubble";
-      bubble.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+      // Pilih ucapan yang belum sedang tampil, supaya tidak ada kalimat kembar di layar.
+      const onScreen = Array.from(quoteLayer.children, (el) => el.textContent);
+      const available = quotes.filter((q) => !onScreen.includes(q));
+      const pool = available.length ? available : quotes;
+      bubble.textContent = pool[Math.floor(Math.random() * pool.length)];
 
-      const duration = randomBetween(15, 20);
+      const duration = randomBetween(11, 15);
       bubble.style.animationDuration = `${duration}s`;
 
       quoteLayer.appendChild(bubble);
@@ -427,8 +457,11 @@
       setTimeout(() => bubble.remove(), duration * 1000);
     }
 
-    setInterval(spawnQuote, 3800);
-    setTimeout(spawnQuote, 3500);
+    // Satu jadwal saja: ucapan pertama setelah 3,5 detik, lalu tiap 3,8 detik.
+    setTimeout(() => {
+      spawnQuote();
+      setInterval(spawnQuote, 3800);
+    }, 3500);
   }
 
   /* -------------------------------------------------------
@@ -436,19 +469,23 @@
      (otomatis bila autoplay diizinkan, atau saat layar diketuk pertama kali)
      ------------------------------------------------------- */
   let started = false;
+  let photosReady = false;
 
   function startExperience() {
     if (started) return;
     started = true;
     document.body.classList.add("is-started");
     if (rain) {
-      buildPhotoRain();
-      startFloatingQuotes();
+      setTimeout(() => {
+        photosReady = true;
+        buildPhotoRain();
+        startFloatingQuotes();
+      }, 3000);
     }
   }
 
   reducedMotionQuery.addEventListener?.("change", () => {
-    if (started) buildPhotoRain();
+    if (photosReady) buildPhotoRain();
   });
 
   if (!(audio && musicButton)) {
@@ -459,9 +496,6 @@
     musicButton.hidden = false;
     audio.volume = 0.55;
     audio.loop = true;
-
-    document.addEventListener("pointerdown", unlockMusic, true);
-    document.addEventListener("keydown", unlockMusic, true);
 
     musicButton.addEventListener("click", () => {
       removeUnlockListeners();
@@ -480,7 +514,6 @@
     audio.addEventListener("ended", syncMusicState);
 
     syncMusicState();
-    attemptPlay();
   }
 
 })();
