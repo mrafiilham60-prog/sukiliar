@@ -1,89 +1,65 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#1a0f15">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="description" content="Hujan foto kenangan yang naik dari bawah.">
-  <title>Kenangan</title>
-
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lily+Script+One&family=Bagel+Fat+One&family=Caveat:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7efe3">
+<title>Selamat ulang tahun, kak</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Leckerli+One&family=Pacifico&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Yellowtail&display=swap">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="greeting" aria-label="Selamat Ulang Tahun, kawan!">
-    <h1 class="greeting__title">
-      <span class="greeting__pre">Selamat</span>
-      <span class="greeting__hbd"><span>Ulang</span><span>Tahun</span></span>
-      <span class="greeting__name">kak♡</span>
+<canvas id="paperRain" class="paper-rain" aria-hidden="true"></canvas>
+
+<section class="cover" id="cover" aria-label="Pembuka">
+  <div class="pol"><img src="assets/foto2.webp" alt="" width="1080" height="1080"><span>♡buat kakak♡</span></div>
+  <h1>Ada kejutan kecil buat kakak</h1>
+  <button class="open" id="open" type="button">Buka kejutan</button>
+  <p>Nyalakan suara, ada lagunya.</p>
+</section>
+
+<header class="intro">
+<div class="header-container">
+  <div class="typo-badge">
+    <h1 class="title-typography">
+      <span class="typo-main typo-top"><i style="--d:.35s">Selamat</i></span>
+      <span class="typo-banner"><i style="--d:.5s">ULANG TAHUN</i></span>
+      <span class="typo-main typo-bottom"><i style="--d:.65s">kak<b>♡</b></i></span>
+      <span class="typo-sub"><i style="--d:.8s">SPESIAL UNTUKMU</i></span>
     </h1>
-  </header>
-
-  <!-- Bone Hearts Background -->
-  <div class="bone-hearts" aria-hidden="true">
-    <div class="bone-heart bh1"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="37" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="46" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><rect x="48" y="55" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><rect x="48" y="64" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".25"/><path d="M48 31 C38 33,22 38,15 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M52 31 C62 33,78 38,85 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 40 C38 42,20 48,13 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 40 C62 42,80 48,87 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 49 C38 52,22 56,18 54" stroke="currentColor" stroke-width=".6" fill="none" opacity=".25"/><path d="M52 49 C62 52,78 56,82 54" stroke="currentColor" stroke-width=".6" fill="none" opacity=".25"/><circle cx="15" cy="35" r="2" stroke="currentColor" stroke-width=".5" fill="none" opacity=".3"/><circle cx="85" cy="35" r="2" stroke="currentColor" stroke-width=".5" fill="none" opacity=".3"/><circle cx="13" cy="45" r="1.5" stroke="currentColor" stroke-width=".5" fill="none" opacity=".25"/><circle cx="87" cy="45" r="1.5" stroke="currentColor" stroke-width=".5" fill="none" opacity=".25"/></svg></div>
-    <div class="bone-heart bh2"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="30" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="38" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><rect x="48" y="46" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 33 C40 35,25 38,18 36" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 33 C60 35,75 38,82 36" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 41 C40 43,22 47,16 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".25"/><path d="M52 41 C60 43,78 47,84 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".25"/><circle cx="18" cy="36" r="1.5" stroke="currentColor" stroke-width=".5" fill="none" opacity=".25"/><circle cx="82" cy="36" r="1.5" stroke="currentColor" stroke-width=".5" fill="none" opacity=".25"/></svg></div>
-    <div class="bone-heart bh3"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="35" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="44" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 38 C40 40,28 43,22 41" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 38 C60 40,72 43,78 41" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
-    <div class="bone-heart bh4"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="37" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="46" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><rect x="48" y="55" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 31 C38 33,22 38,15 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M52 31 C62 33,78 38,85 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 40 C38 42,20 48,13 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 40 C62 42,80 48,87 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 49 C38 52,22 56,18 54" stroke="currentColor" stroke-width=".6" fill="none" opacity=".25"/><path d="M52 49 C62 52,78 56,82 54" stroke="currentColor" stroke-width=".6" fill="none" opacity=".25"/><circle cx="15" cy="35" r="2" stroke="currentColor" stroke-width=".5" fill="none" opacity=".3"/><circle cx="85" cy="35" r="2" stroke="currentColor" stroke-width=".5" fill="none" opacity=".3"/></svg></div>
-    <div class="bone-heart bh5"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><rect x="48" y="32" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="42" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/></svg></div>
-    <div class="bone-heart bh6"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="37" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="46" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 31 C38 33,22 38,15 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M52 31 C62 33,78 38,85 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 40 C38 42,20 48,13 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 40 C62 42,80 48,87 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><circle cx="15" cy="35" r="2" stroke="currentColor" stroke-width=".5" fill="none" opacity=".3"/><circle cx="85" cy="35" r="2" stroke="currentColor" stroke-width=".5" fill="none" opacity=".3"/></svg></div>
-    <div class="bone-heart bh7"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="30" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="38" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><rect x="48" y="46" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 33 C40 35,25 38,18 36" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 33 C60 35,75 38,82 36" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
-    <div class="bone-heart bh8"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><rect x="48" y="35" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/></svg></div>
-    <div class="bone-heart bh9"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="37" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="46" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><rect x="48" y="55" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 31 C38 33,22 38,15 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M52 31 C62 33,78 38,85 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 40 C38 42,20 48,13 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 40 C62 42,80 48,87 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><circle cx="15" cy="35" r="2" stroke="currentColor" stroke-width=".5" fill="none" opacity=".3"/><circle cx="85" cy="35" r="2" stroke="currentColor" stroke-width=".5" fill="none" opacity=".3"/></svg></div>
-    <div class="bone-heart bh10"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="32" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="40" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 35 C40 37,28 40,22 38" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 35 C60 37,72 40,78 38" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
-    <div class="bone-heart bh11"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><rect x="48" y="30" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="40" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><rect x="48" y="50" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
-    <div class="bone-heart bh12"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><path d="M48 33 C40 35,25 38,18 36" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 33 C60 35,75 38,82 36" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 43 C40 45,22 49,16 47" stroke="currentColor" stroke-width=".6" fill="none" opacity=".25"/><path d="M52 43 C60 45,78 49,84 47" stroke="currentColor" stroke-width=".6" fill="none" opacity=".25"/></svg></div>
-    <div class="bone-heart bh13"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="35" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/></svg></div>
-    <div class="bone-heart bh14"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="37" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="46" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 31 C38 33,22 38,15 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M52 31 C62 33,78 38,85 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 40 C38 42,20 48,13 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 40 C62 42,80 48,87 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><circle cx="15" cy="35" r="2" stroke="currentColor" stroke-width=".5" fill="none" opacity=".3"/><circle cx="85" cy="35" r="2" stroke="currentColor" stroke-width=".5" fill="none" opacity=".3"/><circle cx="13" cy="45" r="1.5" stroke="currentColor" stroke-width=".5" fill="none" opacity=".25"/><circle cx="87" cy="45" r="1.5" stroke="currentColor" stroke-width=".5" fill="none" opacity=".25"/></svg></div>
-    <div class="bone-heart bh15"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="30" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="38" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 33 C40 35,25 38,18 36" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 33 C60 35,75 38,82 36" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
-    <div class="bone-heart bh16"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><rect x="48" y="35" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="45" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/></svg></div>
-    <div class="bone-heart bh17"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="28" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="37" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="46" width="4" height="6" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 31 C38 33,22 38,15 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M52 31 C62 33,78 38,85 35" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><path d="M48 40 C38 42,20 48,13 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 40 C62 42,80 48,87 45" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/></svg></div>
-    <div class="bone-heart bh18"><svg viewBox="0 0 100 100" fill="none"><path d="M50 88 C25 65,5 50,5 32 C5 18,16 8,30 8 C38 8,45 13,50 20 C55 13,62 8,70 8 C84 8,95 18,95 32 C95 50,75 65,50 88Z" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M50 84 C27 63,10 50,10 34 C10 22,19 13,30 13 C37 13,43 17,50 24 C57 17,63 13,70 13 C81 13,90 22,90 34 C90 50,73 63,50 84Z" stroke="currentColor" stroke-width=".5" opacity=".3"/><rect x="48" y="32" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".4"/><rect x="48" y="40" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".35"/><rect x="48" y="48" width="4" height="5" rx="1" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M48 35 C40 37,28 40,22 38" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><path d="M52 35 C60 37,72 40,78 38" stroke="currentColor" stroke-width=".6" fill="none" opacity=".3"/><circle cx="22" cy="38" r="1.5" stroke="currentColor" stroke-width=".5" fill="none" opacity=".25"/><circle cx="78" cy="38" r="1.5" stroke="currentColor" stroke-width=".5" fill="none" opacity=".25"/></svg></div>
   </div>
+</div>
+  <p class="wish" id="wish" aria-hidden="true"></p>
+</header>
 
-  <!-- Rose Petals & Explosion Canvases -->
-  <canvas id="petalsCanvas" class="petals-canvas" aria-hidden="true"></canvas>
-  <canvas id="burstCanvas" class="burst-canvas" aria-hidden="true"></canvas>
+<main class="rain" id="rain" aria-label="Foto kenangan"></main>
 
-  <main class="rain" id="rain" aria-label="Hujan foto kenangan"></main>
+<audio id="song" loop preload="auto" src="assets/diri-tulus.mp3"></audio>
 
-  <div class="start-hint" id="startHint" aria-hidden="true">Tekan vinyl 👇</div>
-
-  <audio id="song" loop preload="auto" playsinline>
-    <source src="assets/diri-tulus.mp3" type="audio/mpeg">
-    <source src="assets/lagu.wav" type="audio/wav">
-  </audio>
-
-  <button class="music" id="musicToggle" type="button" aria-label="Putar musik" aria-pressed="false" hidden>
-    <div class="vinyl-disc" aria-hidden="true"></div>
-    <div class="vinyl-info" aria-hidden="true">
-      <span class="vinyl-song">Diri</span>
-      <span class="vinyl-artist">Tulus 🎵</span>
-    </div>
-    <div class="vinyl-bars" aria-hidden="true">
-      <div class="vinyl-bar"></div>
-      <div class="vinyl-bar"></div>
-      <div class="vinyl-bar"></div>
-      <div class="vinyl-bar"></div>
-    </div>
+<div class="dock" id="dock" hidden>
+  <div class="disc" aria-hidden="true"></div>
+  <div class="meta"><b>Diri</b><span id="sub">Tulus</span></div>
+  <button class="play" id="play" type="button" aria-label="Putar musik" aria-pressed="false">
+    <svg class="pl" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    <svg class="pa" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
   </button>
+  <div class="prog" aria-hidden="true"><b id="progress"></b></div>
+</div>
 
-  <div class="viewer" id="photoViewer" role="dialog" aria-modal="true" aria-label="Foto kenangan" aria-hidden="true" inert>
-    <div class="viewer__backdrop" id="viewerBackdrop"></div>
-    <figure class="viewer__frame">
-      <img id="viewerImage" src="" alt="">
-    </figure>
-    <button class="viewer__close" id="viewerClose" type="button" aria-label="Tutup foto">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </button>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Foto kenangan" inert>
+  <div class="stage" id="stage"><figure class="frame" id="frame"><img id="lbImg" alt=""></figure></div>
+  <button class="round x" id="lbClose" type="button" aria-label="Tutup foto"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div class="bar">
+    <button class="round" id="lbPrev" type="button" aria-label="Foto sebelumnya"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <p id="lbCount" aria-live="polite"></p>
+    <button class="round" id="lbNext" type="button" aria-label="Foto berikutnya"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
+</div>
 
-  <script src="script.js" defer></script>
+<script src="assets/confetti.browser.min.js"></script>
+<script src="script.js" defer></script>
 </body>
 </html>

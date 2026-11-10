@@ -1,519 +1,288 @@
 (() => {
   "use strict";
+  const $ = (s) => document.querySelector(s);
+  const rain = $("#rain"), audio = $("#song"), dock = $("#dock"), playBtn = $("#play"), progress = $("#progress");
+  const lb = $("#lb"), lbImg = $("#lbImg"), frame = $("#frame"), lbCount = $("#lbCount"), lbClose = $("#lbClose");
+  const rm = matchMedia("(prefers-reduced-motion: reduce)");
+  const rand = (a, b) => a + Math.random() * (b - a);
 
-  const rain = document.getElementById("rain");
-  const audio = document.getElementById("song");
-  const musicButton = document.getElementById("musicToggle");
-  const viewer = document.getElementById("photoViewer");
-  const viewerImage = document.getElementById("viewerImage");
-  const viewerClose = document.getElementById("viewerClose");
-  const viewerBackdrop = document.getElementById("viewerBackdrop");
-  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-  const photos = [
-    { src: "assets/foto1.webp", alt: "Foto kenangan 1" },
-    { src: "assets/foto2.webp", alt: "Foto kenangan 2" },
-    { src: "assets/foto3.webp", alt: "Foto kenangan 3" },
-    { src: "assets/foto4.webp", alt: "Foto kenangan 4" },
-    { src: "assets/foto5.webp", alt: "Foto kenangan 5" },
-    { src: "assets/foto6.webp", alt: "Foto kenangan 6" },
+  // Ganti foto di sini: [nomor file, lebar, tinggi].
+  const photos = [[1, 1080, 810], [2, 1080, 1080], [3, 1080, 810], [4, 1080, 1080], [5, 1080, 810], [6, 1080, 720]]
+    .map(([n, w, h]) => ({ src: `assets/foto${n}.webp`, w, h, alt: `Foto kenangan ${n}` }));
+  const wishes = [
+    "♡Semoga selalu dikelilingi orang baik.♡",
+    "♡Bahagia di setiap langkahmu.♡",
+    "♡Sukses untuk semua impianmu.♡",
+    "♡Terima kasih sudah jadi teman yang baik.♡",
+    "♡Semoga harimu penuh senyuman.♡",
+    "♡Happy birthday, kak! ♡"
   ];
 
-  // Muat & decode semua foto lebih dulu (selama layar awal), supaya bingkai putih
-  // tidak muncul kosong sebelum gambarnya siap.
-  photos.forEach((p) => {
-    const img = new Image();
-    img.decoding = "async";
-    img.src = p.src;
-    if (img.decode) img.decode().catch(() => {});
+  // Muat foto lebih dulu supaya bingkai tidak kosong saat naik.
+  photos.forEach((p) => { const im = new Image(); im.src = p.src; im.decode?.().catch(() => {}); });
+
+  /* ---------- Hujan foto ---------- */
+  new ResizeObserver(() => rain.style.setProperty("--rh", `${rain.clientHeight}px`)).observe(rain);
+
+  function build() {
+    rain.replaceChildren();
+    const compact = matchMedia("(max-width: 700px)").matches;
+    const isStatic = rm.matches;
+    rain.classList.toggle("static", isStatic);
+    const total = isStatic ? photos.length : compact ? 12 : 20;
+    const lanes = compact ? 4 : 7;
+    const offset = Math.floor(Math.random() * photos.length);
+    const frag = document.createDocumentFragment();
+
+    for (let i = 0; i < total; i++) {
+      const p = photos[(i + offset) % photos.length];
+      const size = compact ? rand(88, 124) : rand(120, 180);
+      const lane = (i * 3) % lanes;
+      const areaW = Math.max(0, rain.clientWidth - size);
+      const frac = Math.min(1, Math.max(0, 0.03 + (lane / (lanes - 1)) * 0.94 + rand(-0.03, 0.03)));
+      const sd = rand(5, 8);
+
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "card";
+      card.setAttribute("aria-label", `Perbesar ${p.alt.toLowerCase()}`);
+      const v = {
+        x: `${frac * areaW}px`, w: `${size}px`, z: Math.round(size), op: rand(0.88, 1).toFixed(2),
+        dur: `${rand(8, 13)}s`, delay: `${(i * (compact ? 1.0 : 0.7) + rand(0, 0.3)).toFixed(2)}s`,
+        ch: `${size * 1.3 + 50}px`, sd: `${sd}s`, sdel: `-${rand(0, sd).toFixed(2)}s`,
+        sa: `${rand(-18, -5)}px`, sb: `${rand(5, 18)}px`, rot: `${rand(-10, 10).toFixed(1)}deg`
+      };
+      for (const k in v) card.style.setProperty(`--${k}`, v[k]);
+
+      const sway = document.createElement("span");
+      sway.className = "sway";
+      const pol = document.createElement("span");
+      pol.className = "pol";
+      const im = new Image();
+      im.src = p.src; im.alt = ""; im.width = p.w; im.height = p.h; im.decoding = "async"; im.draggable = false;
+      pol.append(im); sway.append(pol); card.append(sway); frag.append(card);
+      card.addEventListener("click", () => openLB((i + offset) % photos.length));
+    }
+    rain.append(frag);
+  }
+
+  let rw = innerWidth, timer;
+  addEventListener("resize", () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { if (Math.abs(innerWidth - rw) > 30) { rw = innerWidth; build(); } }, 250);
+  });
+  rm.addEventListener?.("change", build);
+
+  /* ---------- Penampil foto ---------- */
+  let cur = 0, startX = null;
+  function paint() {
+    const p = photos[cur];
+    lbImg.src = p.src; lbImg.alt = p.alt;
+    lbCount.textContent = `${cur + 1} / ${photos.length}`;
+    frame.classList.remove("in"); void frame.offsetWidth; frame.classList.add("in");
+  }
+  function openLB(i) {
+    cur = i; paint();
+    lb.inert = false; lb.classList.add("on"); document.body.classList.add("lb-open");
+    lbClose.focus({ preventScroll: true });
+    $("#hint")?.remove();
+  }
+  function closeLB() {
+    if (!lb.classList.contains("on")) return;
+    lb.classList.remove("on"); lb.inert = true; document.body.classList.remove("lb-open");
+    document.activeElement?.blur();
+  }
+  const step = (d) => { cur = (cur + d + photos.length) % photos.length; paint(); };
+
+  lbClose.onclick = closeLB;
+  $("#lbPrev").onclick = () => step(-1);
+  $("#lbNext").onclick = () => step(1);
+  lb.addEventListener("click", (e) => { if (e.target === lb || e.target.id === "stage") closeLB(); });
+  lb.addEventListener("pointerdown", (e) => { startX = e.clientX; });
+  lb.addEventListener("pointerup", (e) => {
+    if (startX === null) return;
+    const dx = e.clientX - startX; startX = null;
+    if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (!lb.classList.contains("on")) return;
+    if (e.key === "Escape") closeLB();
+    else if (e.key === "ArrowRight") step(1);
+    else if (e.key === "ArrowLeft") step(-1);
+    else if (e.key === "Tab") {
+      const f = [lbClose, $("#lbPrev"), $("#lbNext")];
+      const i = f.indexOf(document.activeElement);
+      e.preventDefault();
+      f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+    }
   });
 
-  const randomBetween = (min, max) => min + Math.random() * (max - min);
+  /* ---------- Musik ---------- */
+  audio.volume = 0.6;
+  function sync() {
+    const on = !audio.paused;
+    dock.classList.toggle("playing", on);
+    playBtn.setAttribute("aria-pressed", String(on));
+    playBtn.setAttribute("aria-label", on ? "Jeda musik" : "Putar musik");
+  }
+  audio.addEventListener("play", sync);
+  audio.addEventListener("pause", sync);
+  audio.addEventListener("timeupdate", () => {
+    if (audio.duration) progress.style.transform = `scaleX(${audio.currentTime / audio.duration})`;
+  });
+  playBtn.onclick = () => (audio.paused ? audio.play().catch(() => {}) : audio.pause());
 
-  function buildPhotoRain() {
-    if (!rain) return;
+  // Status di pemutar: file lagu cukup besar, jadi di HP bisa butuh beberapa detik sebelum bunyi.
+  const sub = $("#sub");
+  audio.addEventListener("waiting", () => { sub.textContent = "Memuat lagu…"; });
+  audio.addEventListener("playing", () => { sub.textContent = "Tulus"; });
 
-    rain.replaceChildren();
-
-    const isStatic = reducedMotionQuery.matches;
-    const compact = window.matchMedia("(max-width: 700px)").matches;
-    const total = isStatic ? photos.length : (compact ? 14 : 24);
-    const lanes = compact ? 5 : 8;
-    const laneStride = compact ? 2 : 3; // lompat antar lintasan agar foto beruntun tidak bersebelahan
-    const slotsPerLane = Math.ceil(total / lanes);
-    const laneSpan = compact ? 72 : 78;
-    const offset = Math.floor(Math.random() * photos.length);
-    const fragment = document.createDocumentFragment();
-
-    rain.classList.toggle("is-static", isStatic);
-
-    for (let index = 0; index < total; index += 1) {
-      const photoIndex = (index + offset) % photos.length;
-      const photo = photos[photoIndex];
-
-      const card = document.createElement("div");
-      card.className = "rise-photo is-loading"; // tersembunyi sampai gambarnya siap
-
-      const size = isStatic
-        ? 0
-        : compact
-          ? randomBetween(60, 94)
-          : randomBetween(86, 140);
-
-      const lane = (index * laneStride) % lanes;
-      const slot = Math.floor(index / lanes);
-      const duration = randomBetween(16, 21);
-      // Foto muncul satu per satu (delay positif berurutan), jadi hujan menebal perlahan.
-      const delay = -4.5 + index * (compact ? 1.4 : 1) + randomBetween(0, 0.5);
-      const swayDuration = randomBetween(5, 8);
-      const swayDelay = -randomBetween(0, swayDuration);
-
-      // Satu lintasan horizontal per lane, dengan fase vertikal yang berjarak.
-      // Lebar area dikurangi lebar foto, jadi lintasan kiri-kanan terbagi rata
-      // di seluruh lebar layar (foto paling kanan tidak keluar dari tepi).
-      const laneFrac = lanes === 1 ? 0.5 : lane / (lanes - 1);
-      const areaW = Math.max(0, (rain.clientWidth || window.innerWidth) - size);
-      const edge = 0.03; // sisakan sedikit ruang di tepi untuk goyangan foto
-      const frac = Math.min(1, Math.max(0, edge + laneFrac * (1 - 2 * edge) + randomBetween(-0.03, 0.03)));
-      const x = frac * areaW;
-
-      card.style.setProperty("--x", `${x}px`);
-      card.style.setProperty("--size", `${size}px`);
-      card.style.setProperty("--duration", `${duration}s`);
-      card.style.setProperty("--delay", `${delay}s`);
-      card.style.setProperty("--sway-duration", `${swayDuration}s`);
-      card.style.setProperty("--sway-delay", `${swayDelay}s`);
-      card.style.setProperty("--rotation", `${randomBetween(-14, 14)}deg`);
-      card.style.setProperty("--sway-a", `${randomBetween(-20, -5)}px`);
-      card.style.setProperty("--sway-b", `${randomBetween(5, 20)}px`);
-      card.style.setProperty("--photo-opacity", randomBetween(0.78, 1).toFixed(2));
-      card.style.zIndex = String(Math.round(size) || 1);
-
-      const sway = document.createElement("div");
-      sway.className = "rise-photo__sway";
-
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "rise-photo__button";
-      button.setAttribute("aria-label", `Perbesar foto: ${photo.alt}`);
-
-      const frame = document.createElement("div");
-      frame.className = "rise-photo__frame";
-
-      const image = document.createElement("img");
-      image.src = photo.src;
-      image.alt = "";
-      image.width = 900;
-      image.height = 1125;
-      image.loading = "eager";
-      image.decoding = "async";
-      image.draggable = false;
-
-      const revealCard = () => card.classList.remove("is-loading");
-      if (image.decode) {
-        image.decode().then(revealCard, revealCard);
-      } else {
-        image.addEventListener("load", revealCard, { once: true });
-        image.addEventListener("error", revealCard, { once: true });
-      }
-
-      frame.append(image);
-      button.append(frame);
-      sway.append(button);
-      card.append(sway);
-      fragment.append(card);
-
-      button.addEventListener("click", (event) => {
-        event.stopPropagation();
-        openViewer(photo.src, photo.alt, button);
-      });
-    }
-
-    rain.append(fragment);
+  function tryPlay() {
+    const p = audio.play();
+    if (!p || !p.catch) return;
+    p.catch(() => {
+      // Diblokir browser: beri petunjuk, dan coba lagi pada ketukan berikutnya di mana saja.
+      sub.textContent = "Ketuk ▶ untuk memutar";
+      document.addEventListener("pointerdown", (e) => {
+        if (audio.paused && !playBtn.contains(e.target)) tryPlay();
+      }, { once: true, capture: true });
+    });
   }
 
-  /* -------------------------------------------------------
-     Rose Petals Animation
-     ------------------------------------------------------- */
-  const petalsCanvas = document.getElementById("petalsCanvas");
-  if (petalsCanvas) {
-    const pCtx = petalsCanvas.getContext("2d");
-    let petals = [];
-
-    function resizePetals() {
-      petalsCanvas.width = window.innerWidth;
-      petalsCanvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resizePetals);
-    resizePetals();
-
-    const petalCount = window.matchMedia("(max-width: 700px)").matches ? 18 : 28;
-    for (let i = 0; i < petalCount; i++) {
-      petals.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        size: randomBetween(8, 16),
-        speedY: randomBetween(0.8, 1.8),
-        speedX: randomBetween(-0.8, 0.8),
-        angle: Math.random() * 360,
-        angularSpeed: randomBetween(-1.5, 1.5),
-        opacity: randomBetween(0.35, 0.75)
-      });
-    }
-
-    function animatePetals() {
-      if (!reducedMotionQuery.matches) {
-        pCtx.clearRect(0, 0, petalsCanvas.width, petalsCanvas.height);
-        petals.forEach((p) => {
-          p.y += p.speedY;
-          p.x += Math.sin(p.y * 0.015) * p.speedX;
-          p.angle += p.angularSpeed;
-
-          if (p.y > petalsCanvas.height + 20) {
-            p.y = -20;
-            p.x = Math.random() * petalsCanvas.width;
-          }
-
-          pCtx.save();
-          pCtx.translate(p.x, p.y);
-          pCtx.rotate((p.angle * Math.PI) / 180);
-          pCtx.globalAlpha = p.opacity;
-
-          pCtx.beginPath();
-          pCtx.moveTo(0, 0);
-          pCtx.bezierCurveTo(-p.size / 2, -p.size / 2, -p.size / 2, p.size / 2, 0, p.size);
-          pCtx.bezierCurveTo(p.size / 2, p.size / 2, p.size / 2, -p.size / 2, 0, 0);
-          pCtx.fillStyle = "#8a2434";
-          pCtx.fill();
-
-          pCtx.restore();
-        });
-      }
-      requestAnimationFrame(animatePetals);
-    }
-    animatePetals();
+  /* ---------- Ucapan bergantian ---------- */
+  const wish = $("#wish");
+  let w = 0;
+  function showWish() {
+    wish.classList.remove("show");
+    setTimeout(() => { wish.textContent = wishes[w++ % wishes.length]; wish.classList.add("show"); }, rm.matches ? 0 : 450);
   }
 
-  /* -------------------------------------------------------
-     Photo Open Burst Animation
-     ------------------------------------------------------- */
-  const burstCanvas = document.getElementById("burstCanvas");
-  let fireBurst = () => {};
+  /* ---------- Hujan Kertas Pesta (Continuous Party Paper Rain) ---------- */
+  const canvas = $("#paperRain");
+  const ctx = canvas ? canvas.getContext("2d") : null;
+  let particles = [];
+  let animId = null;
 
-  if (burstCanvas) {
-    const bCtx = burstCanvas.getContext("2d");
-    let burstParticles = [];
+  function resizeCanvas() {
+    if (!canvas) return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
 
-    function resizeBurst() {
-      burstCanvas.width = window.innerWidth;
-      burstCanvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resizeBurst);
-    resizeBurst();
+  const confettiColors = [
+    "#c63f5b", "#f2d38c", "#e76f51", "#2a9d8f", "#e9c46a",
+    "#9b5de5", "#f4a261", "#3b2a26", "#ffd166", "#f7efe3"
+  ];
 
-    fireBurst = (originX, originY) => {
-      if (reducedMotionQuery.matches) return;
-      const x = originX || window.innerWidth / 2;
-      const y = originY || window.innerHeight / 2;
-      const colors = ["#d7b27b", "#f7eddb", "#e04b63", "#ffffff", "#b88a50", "#9b2c3d"];
-      const count = window.matchMedia("(max-width: 700px)").matches ? 70 : 105;
-
-      for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = randomBetween(4, 16);
-        const type = Math.random();
-        burstParticles.push({
-          x,
-          y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 2.5,
-          gravity: 0.28,
-          friction: 0.96,
-          size: randomBetween(6, 12),
-          color: colors[Math.floor(Math.random() * colors.length)],
-          rotation: Math.random() * 360,
-          rotationSpeed: randomBetween(-9, 9),
-          opacity: 1,
-          shape: type < 0.5 ? "rect" : type < 0.8 ? "star" : "heart"
-        });
-      }
+  function createParticle(initialY) {
+    const isRibbon = Math.random() > 0.4;
+    return {
+      x: Math.random() * (canvas ? canvas.width : 500),
+      y: initialY !== undefined ? initialY : -20 - Math.random() * 50,
+      w: isRibbon ? rand(5, 8) : rand(7, 11),
+      h: isRibbon ? rand(14, 24) : rand(7, 11),
+      color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+      speedY: rand(1.3, 2.9),
+      drift: rand(0.5, 1.6),
+      wobble: Math.random() * Math.PI * 2,
+      wobbleSpeed: rand(0.04, 0.08),
+      rot: Math.random() * 360,
+      rotSpeed: rand(-3, 3),
+      flip: Math.random() * Math.PI,
+      flipSpeed: rand(0.05, 0.1)
     };
+  }
 
-    function drawStar(ctx, size) {
-      ctx.beginPath();
-      for (let i = 0; i < 4; i++) {
-        ctx.lineTo(Math.cos(((18 + i * 90) * Math.PI) / 180) * size, -Math.sin(((18 + i * 90) * Math.PI) / 180) * size);
-        ctx.lineTo(Math.cos(((63 + i * 90) * Math.PI) / 180) * (size * 0.35), -Math.sin(((63 + i * 90) * Math.PI) / 180) * (size * 0.35));
-      }
-      ctx.closePath();
-      ctx.fill();
+  function startPaperRain() {
+    if (!canvas || !ctx || rm.matches) return;
+    const count = window.innerWidth < 700 ? 55 : 85;
+    particles = [];
+    for (let i = 0; i < count; i++) {
+      particles.push(createParticle(Math.random() * canvas.height));
     }
 
-    function drawHeart(ctx, size) {
-      ctx.beginPath();
-      const topCurveHeight = size * 0.3;
-      ctx.moveTo(0, topCurveHeight);
-      ctx.bezierCurveTo(0, 0, -size / 2, 0, -size / 2, topCurveHeight);
-      ctx.bezierCurveTo(-size / 2, (size + topCurveHeight) / 2, 0, size, 0, size * 1.15);
-      ctx.bezierCurveTo(0, size, size / 2, (size + topCurveHeight) / 2, size / 2, topCurveHeight);
-      ctx.bezierCurveTo(size / 2, 0, 0, 0, 0, topCurveHeight);
-      ctx.closePath();
-      ctx.fill();
-    }
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const h = canvas.height;
 
-    function animateBurst() {
-      bCtx.clearRect(0, 0, burstCanvas.width, burstCanvas.height);
-      burstParticles = burstParticles.filter((p) => p.opacity > 0.02);
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.y += p.speedY;
+        p.wobble += p.wobbleSpeed;
+        p.x += Math.sin(p.wobble) * p.drift;
+        p.flip += p.flipSpeed;
+        p.rot += p.rotSpeed;
 
-      burstParticles.forEach((p) => {
-        p.vx *= p.friction;
-        p.vy = (p.vy + p.gravity) * p.friction;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.rotation += p.rotationSpeed;
-        p.opacity -= 0.013;
-
-        bCtx.save();
-        bCtx.translate(p.x, p.y);
-        bCtx.rotate((p.rotation * Math.PI) / 180);
-        bCtx.globalAlpha = Math.max(0, p.opacity);
-        bCtx.fillStyle = p.color;
-
-        if (p.shape === "rect") {
-          bCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
-        } else if (p.shape === "star") {
-          drawStar(bCtx, p.size);
-        } else {
-          drawHeart(bCtx, p.size);
+        if (p.y > h + 25) {
+          particles[i] = createParticle(-20);
+          continue;
         }
 
-        bCtx.restore();
-      });
-
-      requestAnimationFrame(animateBurst);
-    }
-    animateBurst();
-  }
-
-  /* -------------------------------------------------------
-     Penampil foto
-     ------------------------------------------------------- */
-
-  let viewerTrigger = null;
-
-  function openViewer(src, alt, trigger) {
-    if (!viewer || !viewerImage) return;
-
-    viewerTrigger = trigger || null;
-    viewerImage.src = src;
-    viewerImage.alt = alt || "";
-
-    const rect = trigger ? trigger.getBoundingClientRect() : null;
-    const originX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
-    const originY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
-    fireBurst(originX, originY);
-
-    viewer.inert = false;
-    viewer.removeAttribute("aria-hidden");
-    viewer.classList.add("is-open");
-    document.body.classList.add("viewer-open");
-
-    window.requestAnimationFrame(() => {
-      viewerClose?.focus({ preventScroll: true });
-    });
-  }
-
-  function closeViewer() {
-    if (!viewer || !viewer.classList.contains("is-open")) return;
-
-    viewer.classList.remove("is-open");
-    viewer.setAttribute("aria-hidden", "true");
-    viewer.inert = true;
-    document.body.classList.remove("viewer-open");
-
-    // Jangan fokuskan ulang foto yang sedang bergerak; cukup lepas fokusnya
-    // supaya animasinya tidak tertahan setelah viewer ditutup.
-    if (viewerTrigger && viewerTrigger.isConnected) {
-      viewerTrigger.blur();
-    }
-    if (document.activeElement && document.activeElement !== document.body) {
-      document.activeElement.blur();
-    }
-    viewerTrigger = null;
-  }
-
-  viewerClose?.addEventListener("click", closeViewer);
-  viewerBackdrop?.addEventListener("click", closeViewer);
-
-  const greetingTitle = document.querySelector(".greeting__title");
-  greetingTitle?.addEventListener("click", (e) => {
-    fireBurst(e.clientX, e.clientY);
-  });
-
-  viewer?.addEventListener("keydown", (event) => {
-    if (event.key === "Tab") {
-      event.preventDefault();
-      viewerClose?.focus({ preventScroll: true });
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && viewer?.classList.contains("is-open")) {
-      event.preventDefault();
-      closeViewer();
-    }
-  });
-
-  /* -------------------------------------------------------
-     Lagu
-     ------------------------------------------------------- */
-
-  function syncMusicState() {
-    const isPlaying = !audio.paused;
-    musicButton.classList.toggle("is-playing", isPlaying);
-    musicButton.setAttribute("aria-pressed", String(isPlaying));
-    musicButton.setAttribute("aria-label", isPlaying ? "Jeda musik" : "Putar musik");
-  }
-
-  function removeUnlockListeners() {
-    document.removeEventListener("pointerdown", unlockMusic, true);
-    document.removeEventListener("keydown", unlockMusic, true);
-  }
-
-  function attemptPlay() {
-    const attempt = audio.play();
-    if (attempt && typeof attempt.then === "function") {
-      attempt.then(removeUnlockListeners).catch(() => {
-        // Autoplay bersuara biasanya ditahan browser sampai ada gestur.
-      });
-    } else {
-      removeUnlockListeners();
-    }
-  }
-
-  function unlockMusic(event) {
-    if (musicButton.contains(event.target)) return;
-
-    removeUnlockListeners();
-    startExperience();
-    if (audio.paused) {
-      attemptPlay();
-    }
-  }
-
-  /* -------------------------------------------------------
-     Pesan & Doa Melayang
-     ------------------------------------------------------- */
-  const quotes = [
-    "✨ Semoga selalu dikelilingi orang baik!",
-    "🥂 Bahagia di setiap langkahmu!",
-    "🌟 Sukses untuk semua impianmu!",
-    "🤍 Selalu jadi teman yang terbaik!",
-    "🎂 Happy Birthday, Kawann!",
-    "🌸 Semoga harimu penuh senyuman!"
-  ];
-
-  let quotesRunning = false;
-
-  function startFloatingQuotes() {
-    if (quotesRunning) return; // cegah jadwal ucapan ganda, walau terpanggil dua kali
-    quotesRunning = true;
-    let quoteLayer = document.getElementById("quoteLayer");
-    if (!quoteLayer) {
-      quoteLayer = document.createElement("div");
-      quoteLayer.id = "quoteLayer";
-      quoteLayer.className = "quote-layer";
-      quoteLayer.setAttribute("aria-hidden", "true");
-      document.body.appendChild(quoteLayer);
-    }
-
-    if (reducedMotionQuery.matches || !rain) return;
-
-    let quoteSide = false;
-
-    function spawnQuote() {
-      const bubble = document.createElement("div");
-      bubble.className = "quote-bubble";
-      // Pilih ucapan yang belum sedang tampil, supaya tidak ada kalimat kembar di layar.
-      const onScreen = Array.from(quoteLayer.children, (el) => el.textContent);
-      const available = quotes.filter((q) => !onScreen.includes(q));
-      const pool = available.length ? available : quotes;
-      bubble.textContent = pool[Math.floor(Math.random() * pool.length)];
-
-      const duration = randomBetween(11, 15);
-      bubble.style.animationDuration = `${duration}s`;
-
-      quoteLayer.appendChild(bubble);
-
-      // Ukur lebar gelembung supaya tidak terpotong di tepi layar, dan
-      // geser bergantian ke sisi kiri/kanan agar tidak bertumpuk.
-      const margin = 12;
-      const maxLeft = Math.max(margin, window.innerWidth - bubble.offsetWidth - margin);
-      const half = Math.max(0, (maxLeft - margin) / 2);
-      quoteSide = !quoteSide;
-      const minX = margin + (quoteSide ? half : 0);
-      const left = minX + Math.random() * half;
-      bubble.style.left = `${Math.min(maxLeft, left)}px`;
-      setTimeout(() => bubble.remove(), duration * 1000);
-    }
-
-    // Satu jadwal saja: ucapan pertama setelah 3,5 detik, lalu tiap 3,8 detik.
-    setTimeout(() => {
-      spawnQuote();
-      setInterval(spawnQuote, 3800);
-    }, 3500);
-  }
-
-  /* -------------------------------------------------------
-     Mulai: foto & ucapan baru muncul setelah lagu berjalan
-     (otomatis bila autoplay diizinkan, atau saat layar diketuk pertama kali)
-     ------------------------------------------------------- */
-  let started = false;
-  let photosReady = false;
-
-  function startExperience() {
-    if (started) return;
-    started = true;
-    document.body.classList.add("is-started");
-    if (rain) {
-      setTimeout(() => {
-        photosReady = true;
-        buildPhotoRain();
-        startFloatingQuotes();
-      }, 3000);
-    }
-  }
-
-  reducedMotionQuery.addEventListener?.("change", () => {
-    if (photosReady) buildPhotoRain();
-  });
-
-  if (!(audio && musicButton)) {
-    startExperience();
-  }
-
-  if (audio && musicButton) {
-    musicButton.hidden = false;
-    audio.volume = 0.55;
-    audio.loop = true;
-
-    musicButton.addEventListener("click", () => {
-      removeUnlockListeners();
-      startExperience();
-
-      if (audio.paused) {
-        attemptPlay();
-      } else {
-        audio.pause();
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rot * Math.PI) / 180);
+        ctx.scale(1, Math.cos(p.flip)); // Efek melayang 3D bolak-balik
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
       }
-    });
 
-    audio.addEventListener("play", syncMusicState);
-    audio.addEventListener("play", startExperience);
-    audio.addEventListener("pause", syncMusicState);
-    audio.addEventListener("ended", syncMusicState);
+      animId = requestAnimationFrame(render);
+    }
 
-    syncMusicState();
+    if (!animId) {
+      render();
+    }
   }
 
+  /* ---------- Pop Tambahan saat Buka Kejutan ---------- */
+  function firePartyPaperBomb() {
+    if (typeof confetti !== "function") return;
+    const colors = ["#c63f5b", "#f2d38c", "#e76f51", "#2a9d8f", "#e9c46a", "#3b2a26", "#f4a261"];
+
+    confetti({
+      particleCount: 80,
+      spread: 90,
+      origin: { y: 0.6, x: 0.5 },
+      colors: colors,
+      startVelocity: 38,
+      ticks: 250,
+      gravity: 0.85
+    });
+  }
+
+  // Sentuh / klik judul setelah terbuka untuk ledakan kertas lagi
+  $(".intro")?.addEventListener("click", () => {
+    if (document.body.classList.contains("opened") && typeof confetti === "function") {
+      confetti({
+        particleCount: 40,
+        spread: 75,
+        origin: { y: 0.3, x: 0.5 },
+        colors: ["#c63f5b", "#f2d38c", "#e76f51", "#2a9d8f", "#e9c46a", "#3b2a26"],
+        startVelocity: 30,
+        ticks: 200
+      });
+    }
+  });
+
+  /* ---------- Buka kejutan: satu ketukan memulai lagu, judul, dan hujan foto ---------- */
+  $("#open").onclick = () => {
+    tryPlay(); // paling awal, agar masih dihitung sebagai gestur ketukan (aturan autoplay di HP)
+    document.body.classList.add("opened");
+    $("#cover").inert = true;
+    dock.hidden = false;
+    playBtn.focus({ preventScroll: true });
+
+    // Mulai hujan kertas pesta terus-menerus!
+    startPaperRain();
+
+    // Efek pop pembuka
+    setTimeout(firePartyPaperBomb, 350);
+
+    setTimeout(() => { showWish(); setInterval(showWish, 5200); }, 1500);
+  };
+
+  build();
 })();
