@@ -6,16 +6,37 @@
   const rm = matchMedia("(prefers-reduced-motion: reduce)");
   const rand = (a, b) => a + Math.random() * (b - a);
 
-  // Ganti foto di sini: [nomor file, lebar, tinggi].
-  const photos = [[1, 1080, 810], [2, 1080, 1080], [3, 1080, 810], [4, 1080, 1080], [5, 1080, 810], [6, 1080, 720]]
-    .map(([n, w, h]) => ({ src: `assets/foto${n}.webp`, w, h, alt: `Foto kenangan ${n}` }));
+  /* ========================================================
+   * 📸 DAFTAR FOTO KENANGAN (GANTI FOTO DI SINI)
+   * Masukkan file fotomu ke dalam folder 'assets/'
+   * Format foto bebas: .jpg, .jpeg, .png, atau .webp
+   * Kamu bisa tambah atau kurangi daftar foto di bawah ini:
+   * ======================================================== */
+  const photoList = [
+    "assets/foto1.webp.webp",
+    "assets/foto2.webp.webp",
+    "assets/foto3.webp.webp",
+    "assets/foto4.webp.webp",
+    "assets/foto5.webp.webp",
+    "assets/foto6.webp.webp",
+  ];
+
+  // Konversi otomatis ke format foto aplikasi
+  const photos = photoList.map((src, index) => ({
+    src: src,
+    alt: `Foto kenangan ${index + 1}`
+  }));
+
+  /* ========================================================
+   * 💌 DAFTAR TEKS UCAPAN (GANTI UCAPAN DI SINI)
+   * ======================================================== */
   const wishes = [
-    "♡Semoga selalu dikelilingi orang baik.♡",
-    "♡Bahagia di setiap langkahmu.♡",
-    "♡Sukses untuk semua impianmu.♡",
-    "♡Terima kasih sudah jadi teman yang baik.♡",
-    "♡Semoga harimu penuh senyuman.♡",
-    "♡Happy birthday, kak! ♡"
+    "Semoga selalu dikelilingi orang baik.",
+    "Bahagia di setiap langkahmu.",
+    "Sukses untuk semua impianmu.",
+    "Terima kasih sudah jadi teman yang baik.",
+    "Semoga harimu penuh senyuman.",
+    "Happy birthday, kak! Semoga selalu sehat dan bahagia.",
   ];
 
   // Muat foto lebih dulu supaya bingkai tidak kosong saat naik.
@@ -59,7 +80,7 @@
       const pol = document.createElement("span");
       pol.className = "pol";
       const im = new Image();
-      im.src = p.src; im.alt = ""; im.width = p.w; im.height = p.h; im.decoding = "async"; im.draggable = false;
+      im.src = p.src; im.alt = p.alt || ""; im.decoding = "async"; im.draggable = false;
       pol.append(im); sway.append(pol); card.append(sway); frag.append(card);
       card.addEventListener("click", () => openLB((i + offset) % photos.length));
     }
@@ -171,33 +192,52 @@
   window.addEventListener("resize", resizeCanvas);
   resizeCanvas();
 
+  /* ---------- Warna Konfeti & Love Biru ---------- */
+  const blueHeartColors = [
+    "#2b7fff", // Royal blue
+    "#00b4d8", // Bright cerulean
+    "#3a86ff", // Electric blue
+    "#0077b6", // Deep ocean blue
+    "#48cae4", // Sky blue
+    "#2563eb", // Rich blue
+    "#60a5fa"  // Soft pastel blue
+  ];
+
   const confettiColors = [
     "#c63f5b", "#f2d38c", "#e76f51", "#2a9d8f", "#e9c46a",
     "#9b5de5", "#f4a261", "#3b2a26", "#ffd166", "#f7efe3"
   ];
 
   function createParticle(initialY) {
-    const isRibbon = Math.random() > 0.4;
+    const randType = Math.random();
+    // 55% Hujan Love Biru ♥, 25% Pita Kertas, 20% Kertas Persegi
+    const isHeart = randType < 0.55;
+    const isRibbon = !isHeart && randType < 0.8;
+
     return {
+      type: isHeart ? "heart" : isRibbon ? "ribbon" : "square",
       x: Math.random() * (canvas ? canvas.width : 500),
-      y: initialY !== undefined ? initialY : -20 - Math.random() * 50,
+      y: initialY !== undefined ? initialY : -25 - Math.random() * 50,
+      size: isHeart ? rand(16, 28) : rand(7, 12),
       w: isRibbon ? rand(5, 8) : rand(7, 11),
       h: isRibbon ? rand(14, 24) : rand(7, 11),
-      color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
-      speedY: rand(1.3, 2.9),
-      drift: rand(0.5, 1.6),
+      color: isHeart
+        ? blueHeartColors[Math.floor(Math.random() * blueHeartColors.length)]
+        : confettiColors[Math.floor(Math.random() * confettiColors.length)],
+      speedY: isHeart ? rand(1.1, 2.3) : rand(1.3, 2.9), // Love melayang lembut
+      drift: isHeart ? rand(0.7, 1.9) : rand(0.5, 1.6), // Ayunan kiri-kanan alami
       wobble: Math.random() * Math.PI * 2,
-      wobbleSpeed: rand(0.04, 0.08),
+      wobbleSpeed: rand(0.03, 0.07),
       rot: Math.random() * 360,
-      rotSpeed: rand(-3, 3),
+      rotSpeed: rand(-2.5, 2.5),
       flip: Math.random() * Math.PI,
-      flipSpeed: rand(0.05, 0.1)
+      flipSpeed: rand(0.04, 0.09)
     };
   }
 
   function startPaperRain() {
     if (!canvas || !ctx || rm.matches) return;
-    const count = window.innerWidth < 700 ? 55 : 85;
+    const count = window.innerWidth < 700 ? 60 : 95;
     particles = [];
     for (let i = 0; i < count; i++) {
       particles.push(createParticle(Math.random() * canvas.height));
@@ -215,8 +255,8 @@
         p.flip += p.flipSpeed;
         p.rot += p.rotSpeed;
 
-        if (p.y > h + 25) {
-          particles[i] = createParticle(-20);
+        if (p.y > h + 30) {
+          particles[i] = createParticle(-25);
           continue;
         }
 
@@ -224,8 +264,21 @@
         ctx.translate(p.x, p.y);
         ctx.rotate((p.rot * Math.PI) / 180);
         ctx.scale(1, Math.cos(p.flip)); // Efek melayang 3D bolak-balik
-        ctx.fillStyle = p.color;
-        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+
+        if (p.type === "heart") {
+          // Gambar simbol ♥ berwarna biru
+          ctx.font = `bold ${p.size}px "Segoe UI Symbol", "Apple Color Emoji", sans-serif`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = p.color;
+          ctx.shadowColor = "rgba(43, 127, 255, 0.35)";
+          ctx.shadowBlur = 5;
+          ctx.fillText("♥", 0, 0);
+        } else {
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        }
+
         ctx.restore();
       }
 
@@ -240,10 +293,10 @@
   /* ---------- Pop Tambahan saat Buka Kejutan ---------- */
   function firePartyPaperBomb() {
     if (typeof confetti !== "function") return;
-    const colors = ["#c63f5b", "#f2d38c", "#e76f51", "#2a9d8f", "#e9c46a", "#3b2a26", "#f4a261"];
+    const colors = ["#2b7fff", "#00b4d8", "#3a86ff", "#c63f5b", "#f2d38c", "#60a5fa", "#e76f51"];
 
     confetti({
-      particleCount: 80,
+      particleCount: 85,
       spread: 90,
       origin: { y: 0.6, x: 0.5 },
       colors: colors,
@@ -257,10 +310,10 @@
   $(".intro")?.addEventListener("click", () => {
     if (document.body.classList.contains("opened") && typeof confetti === "function") {
       confetti({
-        particleCount: 40,
+        particleCount: 45,
         spread: 75,
         origin: { y: 0.3, x: 0.5 },
-        colors: ["#c63f5b", "#f2d38c", "#e76f51", "#2a9d8f", "#e9c46a", "#3b2a26"],
+        colors: ["#2b7fff", "#00b4d8", "#3a86ff", "#c63f5b", "#f2d38c", "#60a5fa"],
         startVelocity: 30,
         ticks: 200
       });
